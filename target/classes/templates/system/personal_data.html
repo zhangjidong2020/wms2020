@@ -1,0 +1,383 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link th:href="@{/erp/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/erp/css/style.css}"/>
+    <link th:href="@{/erp/assets/css/codemirror.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/font-awesome.min.css}"/>
+    <!--[if IE 7]>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/font-awesome-ie7.min.css}"/>
+    <![endif]-->
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace-ie.min.css}"/>
+    <![endif]-->
+    <script th:src="@{/erp/js/jquery-1.9.1.min.js}"></script>
+    <script th:src="@{/erp/assets/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/erp/Widget/Validform/5.3.2/Validform.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.bootstrap.js}"></script>
+    <script th:src="@{/erp/assets/js/typeahead-bs2.min.js}"></script>
+    <script th:src="@{/erp/assets/layer/layer.js}" type="text/javascript"></script>
+    <script th:src="@{/erp/assets/js/jquery-ui-1.10.3.custom.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.ui.touch-punch.min.js}"></script>
+    <script th:src="@{/erp/assets/js/ace-elements.min.js}"></script>
+    <script th:src="@{/erp/assets/js/ace.min.js}"></script>
+    <script th:src="@{/erp/js/lrtk.js}" type="text/javascript"></script>
+    <script th:src="@{/erp/assets/laydate/laydate.js}" type="text/javascript"></script>
+    <style>
+        .qwer p {
+            margin: 30px 0;
+        }
+
+        .qwer p label {
+            width: 110px;
+        }
+
+        .sns-msg {
+            _height: 25px;
+            min-height: 25px;
+            margin: 0;
+            padding: 15px 0;
+            width: 30%;
+            margin: 0 auto;
+        }
+
+        .sns-msg p {
+            line-height: 30px !important;
+            padding: 0 10px 0 165px !important;
+            border: 1px solid #CEDBA0;
+            background-color: #FCFFE0;
+            background-position: -50px 8px;
+            color: #8DAE1A;
+            background-color: #FCFFE0
+    </style>
+    <title>资料修改</title>
+
+</head>
+
+<body>
+
+<div class="margin clearfix">
+    <div class="stystems_style">
+        <div class="tabbable">
+            <div class="page-content clearfix">
+                <div id="Member_Ratings">
+                    <!--<div class="d_Confirm_Order_style">
+                  <ul class="nav nav-tabs" id="myTab">
+                    <li class="active">
+                      <a data-toggle="tab" href="#home"><i class="green fa fa-home bigger-110"></i>订单处理</a></li>
+                  </ul>
+                  </div>-->
+                    <h4 class="header blue lighter bigger">
+                        <i class="icon-coffee green"></i>
+                        个人资料
+                    </h4>
+                    <form action="/userinfo/update" onsubmit="return sure()" method="post">
+
+                        <div class="add_menber" id="add_menber_style">
+                            <ul class="page-content qwer" style="margin: 0 auto;width: 370px;">
+                                <p>
+                                    <label class="label_name">当前头像：</label>
+
+                                    <img id="preview" th:src="@{/erp/images/user.png}" width="100" height="100"
+                                         style="display: inline-block; width: 80px; height: 80px;">
+
+
+                                </p>
+                                <p>
+                                    <label class="label_name"><span style="color: red;">*</span>用户名：</label>
+                                    <span th:text="${userinfo.userName}" name="userName" type="text" class="text_add"/>
+                                </p>
+                                <p>
+                                    <label class="label_name"><span style="color: red;">*</span>真实姓名：</label><span
+                                        style="color:#BC1717;" th:text="${userinfo.realName}"></span>
+                                </p>
+                                <p>
+                                    <label class="label_name"><span style="color: red;">*</span>性别：</label><span
+                                        class="add_name">
+     <label><input name="sex" type="radio" value="男" th:checked="${userinfo.sex =='男'}" class="ace"><span
+             class="lbl">男</span></label>
+     <label><input name="sex" type="radio" value="女" th:checked="${userinfo.sex =='女'}" class="ace"><span
+             class="lbl">女</span></label>
+     </span>
+                                </p>
+                                <p>
+                                    <label><span style="color: red;">*</span>生日：</label>
+                                    <select id="J_Year" name="birYear">
+                                        <option th:text="${userinfo.birYear}"></option>
+                                        <option value="1940">1940</option>
+                                        <option value="1941">1941</option>
+                                        <option value="1942">1942</option>
+                                        <option value="1943">1943</option>
+                                        <option value="1944">1944</option>
+                                        <option value="1945">1945</option>
+                                        <option value="1946">1946</option>
+                                        <option value="1947">1947</option>
+                                        <option value="1948">1948</option>
+                                        <option value="1949">1949</option>
+                                        <option value="1950">1950</option>
+                                        <option value="1951">1951</option>
+                                        <option value="1952">1952</option>
+                                        <option value="1953">1953</option>
+                                        <option value="1954">1954</option>
+                                        <option value="1955">1955</option>
+                                        <option value="1956">1956</option>
+                                        <option value="1957">1957</option>
+                                        <option value="1958">1958</option>
+                                        <option value="1959">1959</option>
+                                        <option value="1960">1960</option>
+                                        <option value="1961">1961</option>
+                                        <option value="1962">1962</option>
+                                        <option value="1963">1963</option>
+                                        <option value="1964">1964</option>
+                                        <option value="1965">1965</option>
+                                        <option value="1966">1966</option>
+                                        <option value="1967">1967</option>
+                                        <option value="1968">1968</option>
+                                        <option value="1969">1969</option>
+                                        <option value="1970">1970</option>
+                                        <option value="1971">1971</option>
+                                        <option value="1972">1972</option>
+                                        <option value="1973">1973</option>
+                                        <option value="1974">1974</option>
+                                        <option value="1975">1975</option>
+                                        <option value="1976">1976</option>
+                                        <option value="1977">1977</option>
+                                        <option value="1978">1978</option>
+                                        <option value="1979">1979</option>
+                                        <option value="1980">1980</option>
+                                        <option value="1981">1981</option>
+                                        <option value="1982">1982</option>
+                                        <option value="1983">1983</option>
+                                        <option value="1984">1984</option>
+                                        <option value="1985">1985</option>
+                                        <option value="1986">1986</option>
+                                        <option value="1987">1987</option>
+                                        <option value="1988">1988</option>
+                                        <option value="1989">1989</option>
+                                        <option value="1990">1990</option>
+                                        <option value="1991">1991</option>
+                                        <option value="1992">1992</option>
+                                        <option value="1993">1993</option>
+                                        <option value="1994">1994</option>
+                                        <option value="1995">1995</option>
+                                        <option value="1996">1996</option>
+                                        <option value="1997">1997</option>
+                                        <option value="1998">1998</option>
+                                        <option value="1999">1999</option>
+                                        <option value="2000">2000</option>
+                                        <option value="2001">2001</option>
+                                        <option value="2002">2002</option>
+                                        <option value="2003">2003</option>
+                                        <option value="2004">2004</option>
+                                        <option value="2005">2005</option>
+                                        <option value="2006">2006</option>
+                                        <option value="2007">2007</option>
+                                        <option value="2008">2008</option>
+                                        <option value="2009">2009</option>
+                                        <option value="2010">2010</option>
+                                        <option value="2011">2011</option>
+                                        <option value="2012">2012</option>
+                                        <option value="2013">2013</option>
+                                        <option value="2014">2014</option>
+                                        <option value="2015">2015</option>
+                                        <option value="2016">2016</option>
+                                    </select>
+                                    <select id="J_Month" name="birMonth">
+                                        <option th:text="${userinfo.birMonth}"></option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                    <select id="J_Date" name="birDay">
+                                        <option th:text="${userinfo.birDay}"></option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                        <option value="13">13</option>
+                                        <option value="14">14</option>
+                                        <option value="15">15</option>
+                                        <option value="16">16</option>
+                                        <option value="17">17</option>
+                                        <option value="18">18</option>
+                                        <option value="19">19</option>
+                                        <option value="20">20</option>
+                                        <option value="21">21</option>
+                                        <option value="22">22</option>
+                                        <option value="23">23</option>
+                                        <option value="24">24</option>
+                                        <option value="25">25</option>
+                                        <option value="26">26</option>
+                                        <option value="27">27</option>
+                                        <option value="28">28</option>
+                                        <option value="29">29</option>
+                                        <option value="30">30</option>
+                                        <option value="31">31</option>
+                                    </select>
+                                </p>
+
+                                <p>
+                                    <label class="label_name"><span style="color: red;">*</span>个人邮箱：</label>
+                                    <input th:value="${userinfo.userEmail}" name="userEmail" type="text"
+                                           class="text_add"/><br>
+                                    <span style="color: red;display: none" id="espan">邮箱格式错误</span>
+                                </p>
+                                <p>
+                                    <label class="label_name"><span style="color: red;">*</span>联系方式：</label>
+                                    <input th:value="${userinfo.userTel}" name="userTel" type="text" class="text_add"
+                                           oninput="value=value.replace(/[^\d]/g,'')"/>
+                                    <br>
+                                    <span style="color: red;display: none" id="tspan">手机号格式错误</span>
+                                </p>
+
+                                <input type="submit" id="show" class=" btn btn-primary"></input>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('input[type=text]').on('blur', function () {
+
+
+        var userTel = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
+        if (!userTel.test($("input[name='userTel']").val())) {
+            $("#tspan").show();
+        }
+        if (userTel.test($("input[name='userTel']").val())) {
+            $("#tspan").css("display", "none");
+        }
+
+
+        var email = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+        if (!email.test($("input[name='userEmail']").val())) {
+            $("#espan").show();
+        }
+        if (email.test($("input[name='userEmail']").val())) {
+            $("#espan").css("display", "none");
+        }
+
+    })
+
+</script>
+<script>
+    function sure() {
+        if (confirm("确定保存吗？")) {
+
+            var email = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+            if (!email.test($("input[name='userEmail']").val())) {
+                alert("邮箱格式不合格！");
+                return false;
+            }
+
+            var userTel = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
+            if (!userTel.test($("input[name='userTel']").val())) {
+                alert("手机号格式不合格！");
+                return false;
+            }
+
+
+        } else {
+            return false;
+        }
+    }
+</script>
+
+</body>
+</html>
+<script>
+    jQuery(function ($) {
+        $('table th input:checkbox').on('click', function () {
+            var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+                .each(function () {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+
+        });
+
+
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            var w2 = $source.width();
+
+            if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2)) return 'right';
+            return 'left';
+        }
+    })
+
+    $("#show").click(function () {
+        $("#ook").show();
+    });
+
+    //下面用于图片上传预览功能
+    function setImagePreview(avalue) {
+        var docObj = document.getElementById("doc");
+
+        var imgObjPreview = document.getElementById("preview");
+        if (docObj.files && docObj.files[0]) {
+//火狐下，直接设img属性
+            imgObjPreview.style.display = 'inline-block';
+            imgObjPreview.style.width = '80px';
+            imgObjPreview.style.height = '80px';
+//imgObjPreview.src = docObj.files[0].getAsDataURL();
+
+//火狐7以上版本不能用上面的getAsDataURL()方式获取，需要一下方式
+            imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+        } else {
+//IE下，使用滤镜
+            docObj.select();
+            var imgSrc = document.selection.createRange().text;
+            var localImagId = document.getElementById("localImag");
+//必须设置初始大小
+            localImagId.style.width = "80px";
+            localImagId.style.height = "80px";
+//图片异常的捕捉，防止用户修改后缀来伪造图片
+            try {
+                localImagId.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+                localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+            } catch (e) {
+                alert("您上传的图片格式不正确，请重新选择!");
+                return false;
+            }
+            imgObjPreview.style.display = 'none';
+            document.selection.empty();
+        }
+        return true;
+    }
+
+</script>

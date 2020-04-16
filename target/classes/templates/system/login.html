@@ -1,0 +1,194 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>登陆</title>
+    <script type="text/javascript" th:src="@{/erp/js/jquery1.9.0.min.js}"></script>
+    <script type="text/javascript" th:src="@{/erp/js/jquery.SuperSlide.2.1.js}"></script>
+    <link th:href="@{/erp/css/css.css}" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<!-- 大图片 -->
+<div class="fullSlide">
+    <div class="bd">
+        <ul>
+            <li _src="url(/erp/images/bg1.jpg)" style="background:#E2025E center 0 no-repeat;"></li>
+            <li _src="url(/erp/images/bg2.jpg)" style="background:#DED5A1 center 0 no-repeat;"></li>
+        </ul>
+    </div>
+    <div class="hd">
+        <ul>
+        </ul>
+    </div>
+    <span class="prev"></span> <span class="next"></span></div>
+<script type="text/javascript">
+
+    /* 控制左右按钮显示 */
+    jQuery(".fullSlide").hover(function () {
+        jQuery(this).find(".prev,.next").stop(true, true).fadeTo("show", 0.5)
+    }, function () {
+        jQuery(this).find(".prev,.next").fadeOut()
+    });
+
+    /* 调用SuperSlide */
+    jQuery(".fullSlide").slide({
+        titCell: ".hd ul", mainCell: ".bd ul", effect: "fold", autoPlay: true, autoPage: true, trigger: "click",
+        startFun: function (i) {
+            var curLi = jQuery(".fullSlide .bd li").eq(i); /* 当前大图的li */
+            if (!!curLi.attr("_src")) {
+                curLi.css("background-image", curLi.attr("_src")).removeAttr("_src") /* 将_src地址赋予li背景，然后删除_src */
+            }
+        }
+    });
+
+    function login_btn_click() {
+        var num = 0;
+        var str = "";
+
+
+        if ($('#username').val() == '') {
+
+            alert(str += "" + "用户名不能为空！\r\n", {
+                title: '提示框',
+                icon: 0,
+            });
+            return false;
+        }
+
+        if ($('#password').val() == '') {
+
+            alert(str += "" + "密码不能为空！\r\n", {
+                title: '提示框',
+                icon: 0,
+            });
+            return false;
+        }
+
+
+        /*if($("input[type$='text']").val()=='system'){
+             location.href="index.html";
+        } else if($("input[type$='text']").val()=='admin'){
+
+              location.href="e_index.html";
+        } else if($("input[type$='text']").val()=='test'){
+
+              location.href="p_index.html";
+        } else {
+          alert('用户不存在！',{
+          title: '提示框',
+          icon:0,
+           });
+         return false;
+        }
+         alert('登陆成功！',{
+         title: '提示框',
+         icon:1,
+        });
+         layer.close(index);*/
+
+
+    }
+
+    /*点击更换图片*/
+    function changeImg() {
+        var imgSrc = $("#imgObj");
+        var src = imgSrc.attr("src");
+        imgSrc.attr("src", chgUrl(src));
+    }
+
+    // 时间戳
+    // 为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+    function chgUrl(url) {
+        var timestamp = (new Date()).valueOf();
+        url = url.substring(0, 20);
+        if ((url.indexOf("&amp;") >= 0)) {
+            url = url + "×tamp=" + timestamp;
+        } else {
+            url = url + "?timestamp=" + timestamp;
+        }
+        return url;
+    }
+
+</script>
+<!-- 大图片 -->
+<div class="login_r">
+    <div class="right-content">
+        <div class="login-header">
+            <div class="brand">速登云ERP系统</div>
+        </div>
+        <div class="login-content tab-content">
+            <div class="tab-pane fade in active" id="company_user">
+
+                <form action="login" method="post">
+
+
+                    <div class="form-group m-b-15">
+                        <input name="username" id="username" class="form-control input-lg" placeholder="请输入账号"
+                               style="font-size: 16px" type="text">
+                    </div>
+                    <input name="type" value="1" type="hidden">
+                    <div class="form-group m-b-15">
+                        <input name="password" id="password" class="form-control input-lg" placeholder="请输入密码"
+                               style="font-size: 16px" type="password">
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input name="code" id="input-jcaptchaCode"
+                                   style="width: 30%; font-size: 16px; height: 32px; margin-right: 10px; float:left;"
+                                   placeholder="请输入验证码" class="form-control" required="required" maxlength="4"
+                                   type="text">
+                            <img class="jcaptcha-btn jcaptcha-img" th:src="@{/getCode}" id="imgObj" title="点击更换验证码"
+                                 style="border: 1px solid #AAA; margin-right: 10px; margin-top: 10px;cursor: pointer;float:left;">
+                            <a class="jcaptcha-btn" th:href="@{#}" onclick="changeImg()"
+                               style="display: block; margin-top: 15px">换一张</a>
+                        </div>
+                    </div>
+
+                    <span style="color: red;" th:text="${msg}"></span>
+
+                    <div class="login-buttons">
+                        <input type="submit" class="btn btn-primary btn-block btn-lg btn-submit btn-green"
+                               id="login_btn" onclick="login_btn_click()" value="登录"></input>
+                    </div>
+                    <hr class="hr_ex">
+                    <div class="form-group">
+                        <div class="col-sm-12"> 没有注册账号，赶快<a th:href="@{/register/aa}"> 注册 </a>吧。</div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+        <script>
+
+        </script>
+
+        <script>
+            var companyUser = document.getElementById("company_user");
+            companyUser.className += " active"
+        </script>
+    </div>
+
+</div>
+<div class="system-notice">
+    <div class="form-group" style="margin-bottom:0;">
+        <div class="col-sm-12">
+            [友情链接]：<a href="#" target="_blank">友情链接</a>|<a href="#" target="_blank">友情链接</a>|<a href="#"
+                                                                                                target="_blank">友情链接</a>|<a
+                href="#" target="_blank">友情链接</a>|<a href="#" target="_blank">友情链接</a>|<a href="#"
+                                                                                          target="_blank">友情链接</a>|<a
+                href="#" target="_blank">友情链接</a>|<a href="#" target="_blank">友情链接</a></div>
+        <div class="col-sm-12">
+            <a href="#" target="_blank">诚征英才</a>|<a href="#" target="_blank">联系我们</a>|版权所有：<a href="#" target="_blank">武汉群翔技术有限公司</a>
+        </div>
+        <div class="col-sm-12">
+            Copyright ©360.cn..京ICP证080047号
+            京公网安备11000002000006号 中国互联网举报中心
+        </div>
+    </div>
+</div>
+</body>
+</html>

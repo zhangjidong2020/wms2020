@@ -1,0 +1,440 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link th:href="@{/erp/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/erp/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/font-awesome.min.css}"/>
+    <link th:href="@{/erp/assets/css/codemirror.css}" rel="stylesheet">
+    <title>无标题文档</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .w15pre {
+            width: 15%;
+        }
+
+        .w17pre {
+            width: 17%;
+        }
+
+        .w18pre {
+            width: 18%;
+        }
+
+        .w18pre {
+            width: 18%;
+        }
+
+        .w20pre {
+            width: 20%;
+        }
+
+        .w33pre {
+            width: 33%;
+        }
+
+        .w34pre {
+            width: 34%;
+        }
+
+        .w25pre {
+            width: 25%;
+        }
+
+        .w40pre {
+            width: 40%;
+        }
+
+        .w50pre {
+            width: 50%;
+        }
+
+        .w100pre {
+            width: 100%;
+        }
+
+        .sy_box {
+            padding: 20px;
+        }
+
+        .info-panel dl {
+            -moz-border-bottom-colors: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            border-bottom-color: #deeffb;
+            border-bottom-style: solid;
+            border-bottom-width: 1px;
+            border-image-outset: 0 0 0 0;
+            border-image-repeat: stretch stretch;
+            border-image-slice: 100% 100% 100% 100%;
+            border-image-source: none;
+            border-image-width: 1 1 1 1;
+            border-left-color: #deeffb;
+            border-left-style: solid;
+            border-left-width: 1px;
+            border-right-color: #deeffb;
+            border-right-style: solid;
+            border-right-width: 1px;
+            border-top-color: #deeffb;
+            border-top-style: solid;
+            border-top-width: 1px;
+            float: left;
+            margin-bottom: 0;
+            margin-left: 0;
+            margin-right: 2%;
+            margin-top: 30px;
+            width: 31%;
+            height: 202px;
+        }
+
+        .info-panel dl:hover {
+            border-bottom-color: #75ccef;
+            border-left-color: #75ccef;
+            border-right-color: #75ccef;
+            border-top-color: #75ccef;
+            box-shadow: 3px 3px 0 #deeffb;
+        }
+
+        .info-panel dl dt {
+            padding-bottom: 20px;
+            padding-left: 0;
+            padding-right: 0;
+            padding-top: 20px;
+            text-align: center;
+        }
+
+        .info-panel dl dt .ico {
+            -moz-border-bottom-colors: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            border-bottom-color: #75ccef;
+            border-bottom-left-radius: 32px;
+            border-bottom-right-radius: 32px;
+            border-bottom-style: solid;
+            border-bottom-width: 2px;
+            border-image-outset: 0 0 0 0;
+            border-image-repeat: stretch stretch;
+            border-image-slice: 100% 100% 100% 100%;
+            border-image-source: none;
+            border-image-width: 1 1 1 1;
+            border-left-color: #75ccef;
+            border-left-style: solid;
+            border-left-width: 2px;
+            border-right-color: #75ccef;
+            border-right-style: solid;
+            border-right-width: 2px;
+            border-top-color: #75ccef;
+            border-top-left-radius: 32px;
+            border-top-right-radius: 32px;
+            border-top-style: solid;
+            border-top-width: 2px;
+            height: 60px;
+            margin-bottom: 0;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 0;
+            position: relative;
+            width: 60px;
+            z-index: 1;
+        }
+
+        .info-panel dl dt .ico i {
+            background-attachment: scroll;
+            background-clip: border-box;
+            background-color: rgba(0, 0, 0, 0);
+            background-image: url(/erp/images/bg_position.gif);
+            background-origin: padding-box;
+            background-position-x: 0;
+            background-position-y: 0;
+            background-repeat: no-repeat;
+            background-size: auto auto;
+            height: 32px;
+            left: 50%;
+            margin-bottom: auto;
+            margin-left: -16px;
+            margin-right: auto;
+            margin-top: -16px;
+            position: absolute;
+            top: 50%;
+            width: 32px;
+            z-index: 1;
+        }
+
+        .info-panel dl.member dt .ico i {
+            background-position-x: 0;
+            background-position-y: 0;
+        }
+
+        .info-panel dl.shop dt .ico i {
+            background-position-x: -32px;
+            background-position-y: 0;
+        }
+
+        .info-panel dl.goods dt .ico i {
+            background-position-x: -64px;
+            background-position-y: 0;
+        }
+
+        .info-panel dl.trade dt .ico i {
+            background-position-x: -96px;
+            background-position-y: 0;
+        }
+
+        .info-panel dl.operation dt .ico i {
+            background-position-x: -128px;
+            background-position-y: 0;
+        }
+
+        .info-panel dl.cms dt .ico i {
+            background-position-x: -160px;
+            background-position-y: 0;
+        }
+
+        .info-panel dl dt .ico sub {
+            background-color: #fff;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            height: 20px;
+            left: 40px;
+            padding-bottom: 2px;
+            padding-left: 2px;
+            padding-right: 2px;
+            padding-top: 2px;
+            position: absolute;
+            top: -4px;
+            z-index: 1;
+        }
+
+        .info-panel dl dt .ico sub span {
+            -moz-border-bottom-colors: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            background-color: #fff;
+            border-bottom-color: #75ccef;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-bottom-style: solid;
+            border-bottom-width: 2px;
+            border-image-outset: 0 0 0 0;
+            border-image-repeat: stretch stretch;
+            border-image-slice: 100% 100% 100% 100%;
+            border-image-source: none;
+            border-image-width: 1 1 1 1;
+            border-left-color: #75ccef;
+            border-left-style: solid;
+            border-left-width: 2px;
+            border-right-color: #75ccef;
+            border-right-style: solid;
+            border-right-width: 2px;
+            border-top-color: #75ccef;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            border-top-style: solid;
+            border-top-width: 2px;
+            color: #75ccef;
+            display: block;
+            font-family: Tahoma;
+            font-size: 11px;
+            height: 16px;
+            line-height: 13px;
+            min-width: 8px;
+            padding-bottom: 0;
+            padding-left: 4px;
+            padding-right: 4px;
+            padding-top: 0;
+            text-align: center;
+        }
+
+        .info-panel dl dt .ico sub span em {
+            font-weight: 600;
+        }
+
+        .info-panel dl dt h3 {
+            color: #75ccef;
+            font-size: 24px;
+            font-weight: 100;
+            line-height: 30px;
+            margin-bottom: 0;
+            margin-left: 0;
+            margin-right: 0;
+            margin-top: 5px;
+        }
+
+        .info-panel dl dt h5 {
+            color: #75ccef;
+            font-size: 12px;
+            font-weight: 100;
+            line-height: 20px;
+            margin-bottom: 0;
+            margin-left: 0;
+            margin-right: 0;
+            margin-top: 5px;
+        }
+
+        .info-panel dl dt #system-info {
+            height: 55px;
+            margin-bottom: 0;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 6px;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            position: relative;
+            width: 96%;
+            z-index: 1;
+        }
+
+        .info-panel dl dt ul li {
+            color: #75ccef;
+            font-weight: 600;
+            line-height: 20px;
+        }
+
+        .info-panel dl dt ul li span {
+            font-family: Tahoma;
+            font-size: 11px;
+            font-weight: 100;
+            margin-left: 8px;
+        }
+
+        .info-panel dl dd {
+            border-top-color: #deeffb;
+            border-top-style: solid;
+            border-top-width: 1px;
+        }
+
+        .info-panel dl dd ul {
+            font-size: 0;
+        }
+
+        .info-panel dl dd li {
+            border-left-color: #deeffb;
+            border-left-style: solid;
+            border-left-width: 1px;
+            display: inline-block;
+            margin-left: -1px;
+            text-align: center;
+        }
+
+        .info-panel dl dd li a {
+            color: #75ccef;
+            display: block;
+            font-size: 12px;
+            height: 20px;
+            line-height: 20px;
+            margin-bottom: 0;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 0;
+            padding-bottom: 10px;
+            padding-left: 0;
+            padding-right: 0;
+            padding-top: 10px;
+            position: relative;
+            z-index: 1;
+            height: 40px;
+        }
+
+
+    </style>
+</head>
+
+<body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    function setTime() {
+        var dt = new Date();
+        var arr_week = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
+        var strWeek = arr_week[dt.getDay()];
+        var strHour = dt.getHours();
+        var strMinutes = dt.getMinutes();
+        var strSeconds = dt.getSeconds();
+        if (strMinutes < 10) strMinutes = "0" + strMinutes;
+        if (strSeconds < 10) strSeconds = "0" + strSeconds;
+        var strYear = dt.getFullYear() + "年";
+        var strMonth = (dt.getMonth() + 1) + "月";
+        var strDay = dt.getDate() + "日";
+        <!--var strTime=strHour+":"+strMinutes+":"+strSeconds;-->
+        strTime = strHour + ":" + strMinutes + ":" + strSeconds;
+        time.innerHTML = strYear + strMonth + strDay + " " + strTime + "  " + strWeek;
+    }
+
+    setInterval("setTime()", 1000);
+    /*]]>*/
+
+
+</script>
+
+<div class="page-content clearfix">
+    <div class="alert alert-block alert-success">
+        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+        <i class="icon-ok green"></i>欢迎使用<strong class="green">百里半ERP管理系统<small>(v1.1)</small></strong>,你本次登陆时间为<span
+            id="time"></span>，登陆IP:<span th:text="${session.ip}"></span>
+    </div>
+</div>
+<div class="sy_box">
+    <div class="info-panel">
+        <dl class="member">
+            <dt>
+                <div class="ico"><i></i><sub title="订单管理"><span><em id="statistics_member"
+                                                                    th:text="${session.home[4]}"></em></span></sub>
+                </div>
+                <h3>订单</h3>
+                <h5>全部订单(<span th:text="${session.home[4]}"></span>)个</h5>
+            </dt>
+            <dd>
+                <ul>
+                    <li class="w50pre none"><a href="#">未配货订单(<span th:text="${session.home[5]}"></span>)</a></li>
+                    <li class="w50pre none"><a href="#">已配货订单(<span th:text="${session.home[6]}"></span>)</a></li>
+                </ul>
+            </dd>
+        </dl>
+        <dl class="shop">
+            <dt>
+                <div class="ico"><i></i><sub title="商品管理"><span><em id="statistics_member"
+                                                                    th:text="${session.home[2]}"></em></span></sub>
+                </div>
+                <h3>商品</h3>
+                <h5>商品总数(<span th:text="${session.home[3]}"></span>)个</h5>
+            </dt>
+            <dd>
+                <ul>
+                    <li class="w100pre none"><a href="#">下架商品(<span th:text="${session.home[3]}"></span>)</a></li>
+                </ul>
+            </dd>
+        </dl>
+        <dl class="goods">
+            <dt>
+                <div class="ico"><i></i><sub title="仓库管理"><span><em id="statistics_member"
+                                                                    th:text="${session.home[0]}"></em></span></sub>
+                </div>
+                <h3>仓库</h3>
+                <h5>仓库数量(<span th:text="${session.home[0]}"></span>)</h5>
+            </dt>
+            <dd>
+                <ul>
+                    <li class="w100pre none"><a href="#">仓库商品数(<span th:text="${session.home[1]}"></span>)</a></li>
+                </ul>
+            </dd>
+        </dl>
+    </div>
+</div>
+</body>
+</html>

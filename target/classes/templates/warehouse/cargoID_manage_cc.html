@@ -1,0 +1,655 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link th:href="@{/erp/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/erp/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/Widget/zTree/css/zTreeStyle/zTreeStyle.css}" type="text/css">
+    <link th:href="@{/erp/Widget/icheck/icheck.css}" rel="stylesheet" type="text/css"/>
+    <!--[if IE 7]>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/font-awesome-ie7.min.css}"/>
+    <![endif]-->
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace-ie.min.css}"/>
+    <![endif]-->
+    <script th:src="@{/erp/js/jquery-1.9.1.min.js}"></script>
+    <script th:src="@{/erp/assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{/erp/assets/js/typeahead-bs2.min.js}"></script>
+    <!-- page specific plugin scripts -->
+    <script th:src="@{/erp/assets/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/erp/js/H-ui.js}"></script>
+    <script type="text/javascript" th:src="@{/erp/js/H-ui.admin.js}"></script>
+    <script th:src="@{/erp/assets/layer/layer.js}" type="text/javascript"></script>
+    <script th:src="@{/erp/assets/laydate/laydate.js}" type="text/javascript"></script>
+    <script type="text/javascript" th:src="@{/erp/Widget/zTree/js/jquery.ztree.all-3.5.min.js}"></script>
+    <script th:src="@{/erp/js/lrtk.js}" type="text/javascript"></script>
+    <title>货位管理</title>
+</head>
+
+<body>
+<div class=" page-content clearfix">
+    <div id="products_style">
+        <div class="search_style">
+            <ul class="search_content clearfix">
+                <li>
+                    <label class="l_f">货架编号</label>
+                    <input name="shelves_no" id="shelves_no" type="text" class="text_add" placeholder="输入货架编号"
+                           style=" width:180px"/>
+                </li>
+                <li>
+                    <label class="l_f">货位编号</label>
+                    <input name="cargo_no" id="cargo_no" type="text" class="text_add" placeholder="输入货位编号"
+                           style=" width:180px"/>
+                </li>
+                <li>
+                    <label class="l_f">货位状态</label>
+                    <select name="status" id="status" style="margin-left:10px;">
+                        <option></option>
+                        <option>有货</option>
+                        <option>无货</option>
+                    </select>
+                </li>
+                <li style="width:90px;">
+                    <button type="button" class="btn_search"><i class="icon-search"></i>查询</button>
+                </li>
+            </ul>
+        </div>
+        <div class="border clearfix"><span class="l_f"> <a href="javascript:;" id="property_add"
+                                                           class="btn btn-warning"><i
+                class="icon-plus"></i>新建货位</a> </span></div>
+        <!--产品列表展示-->
+        <div class="h_products_list clearfix" id="products_list">
+            <div id="scrollsidebar" class="left_Treeview">
+                <div class="show_btn" id="rightArrow"><span></span></div>
+                <div class="widget-box side_content">
+                    <div class="side_title">
+                        <a title="隐藏" class="close_btn"><span></span></a>
+                    </div>
+                    <div class="side_list">
+                        <div class="widget-header header-color-green2">
+                            <h4 class="lighter smaller">现有货架列表</h4>
+                        </div>
+                        <div class="widget-body">
+                            <div class="widget-main padding-8">
+                                <div id="treeDemo" class="ztree"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table_menu_list" id="testIframe">
+                <table class="table table-striped table-bordered table-hover" id="sample-table">
+                    <thead>
+                    <tr>
+                        <th hidden="hidden">id</th>
+                        <th width="90px">序号</th>
+                        <th width="120px">货位编号</th>
+                        <th width="140px">所属货架编号</th>
+                        <th width="100px">所属货区</th>
+                        <th width="100px">所属仓库</th>
+                        <th width="80px">负责人</th>
+                        <th width="120px">联系电话</th>
+                        <th width="150px">放置货物</th>
+                        <th width="180px">创建时间</th>
+                        <th width="130px">状态</th>
+                        <th width="200px">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="Cargo : ${allCargo}">
+                        <td th:text="${Cargo.id}" hidden="hidden"></td>
+                        <td th:text="${CargoStat.index+1}"></td>
+                        <td th:text="${Cargo.cargoNo}"></td>
+                        <td th:text="${Cargo.shelvesNo}"></td>
+                        <td th:text="${Cargo.damName}"></td>
+                        <td th:text="${Cargo.wareName}"></td>
+                        <td width="">张三1</td>
+                        <td width="">15234672586</td>
+                        <td th:text="${Cargo.product}"></td>
+                        <td th:text="${#dates.format(Cargo.creatTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td class="td-status"><span
+                                th:class="${Cargo.status}=='有货'? 'label label-defaunt radius':'label label-success radius'"
+                                th:text="${Cargo.status}"></span></td>
+                        <td class="td-manage">
+                            <a style="text-decoration:none" class="btn btn-xs " onClick="member_start(this,id)"
+                               href="javascript:;" title="无货"><i class="icon-ok bigger-120"></i></a>
+                            <a title="编辑" class="btn btn-xs btn-success  property_edit">
+                                <i class="icon-edit bigger-120"></i></a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--add货位管理分配图层-->
+<div class="add_menber" id="add_menber_style" style="display:none">
+    <ul class=" page-content">
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red">*</span>所属货区：</label>
+            <div class="formControls " style="width:280px;">
+                <select style="margin-left:10px;" id="allWarehouse">
+                    <option>请选择仓库</option>
+                </select>
+                <select style="margin-left:10px;" id="dam_id">
+                    <option>请选择货区</option>
+                </select>
+            </div>
+        </div>
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red">*</span>货架编号：</label>
+            <div class="formControls " style="width:280px;">
+                <select style="margin-left:10px;" id="allShelves">
+                    <option>请选择货架</option>
+                </select>
+            </div>
+        </div>
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red">*</span>货位编号：</label>
+            <div class="formControls ">
+                <input type="text" class="input-text" placeholder="请输入货位编号" id="cargoNo"/>
+            </div>
+        </div>
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red">*</span>描述：</label>
+            <div class="formControls "><textarea id="remark"></textarea>
+            </div>
+        </div>
+    </ul>
+</div>
+</div>
+</div>
+</div>
+<!--update货位分配图层-->
+<div class="edit_menber" id="edit_menber_style" style="display:none">
+    <ul class=" page-content">
+        <div class="Operate_cont clearfix" hidden="hidden">
+            <label class="form-label"><span class="c-red">*</span>id：</label>
+            <div class="formControls ">
+                <input type="text" class="input-text" id="id2"/>
+            </div>
+        </div>
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red">*</span>所属货区：</label>
+            <div class="formControls " style="width:280px;">
+                <select style="margin-left:10px;" id="allWarehouse2">
+                    <option>请选择仓库</option>
+                </select>
+                <select style="margin-left:10px;" id="dam_id2">
+                    <option>请选择货区</option>
+                </select>
+            </div>
+        </div>
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red">*</span>货架编号：</label>
+            <div class="formControls " style="width:280px;">
+                <select style="margin-left:10px;" id="allShelves2">
+                    <option>请选择货架</option>
+                </select>
+            </div>
+        </div>
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red">*</span>状态：</label>
+            <div class="formControls " style="width:280px;">
+                <select style="margin-left:10px;" id="status2">
+                    <option>无货</option>
+                    <option>有货</option>
+                </select>
+            </div>
+        </div>
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red">*</span>货位编号：</label>
+            <div class="formControls ">
+                <input type="text" class="input-text" placeholder="请输入货位编号" id="cargoNo2"/>
+            </div>
+        </div>
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red">*</span>主要商品：</label>
+            <div class="formControls ">
+                <input type="text" class="input-text" placeholder="主要商品" id="main_product2"/>
+            </div>
+        </div>
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red">*</span>创建时间：</label>
+            <div class="formControls ">
+                <input type="text" class="input-text" placeholder="请输入创建时间" id="creatTime2"/>
+            </div>
+        </div>
+
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red">*</span>描述：</label>
+            <div class="formControls "><textarea id="remark2"></textarea>
+            </div>
+        </div>
+    </ul>
+</div>
+<script type="text/javascript" th:src="@{/js/w_ca_s_c.js}"></script>
+</body>
+</html>
+<script>
+    /*区域分配-添加*/
+    $('#property_add').on('click', function () {
+        layer.open({
+            type: 1,
+            title: '新建货位',
+            maxmin: true,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['600px', ''],
+            content: $('#add_menber_style'),
+            btn: ['提交', '取消'],
+            yes: function (index, layero) {
+
+                var data = {};
+                data.wareId = $("#allWarehouse").val();
+                data.damId = $("#dam_id").val();
+                data.shelvesNo = $("#allShelves").val();
+                data.cargoNo = $("#cargoNo").val();
+                data.remark = $("#remark").val();
+
+                console.log(JSON.stringify(data));
+                $.ajax({
+                    url: '[[@{/cargo/addCargo}]]',
+                    type: 'post',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function (d) {
+                        var num = 0;
+                        var str = "";
+                        $(".add_menber input[type$='text']").each(function (n) {
+                            if ($(this).val() == "") {
+                                layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                                    title: '提示框',
+                                    icon: 0,
+                                });
+                                num++;
+                                return false;
+                            }
+                        });
+                        if (num > 0) {
+                            return false;
+                        } else {
+
+                            layer.alert('添加成功！', {
+                                title: '提示框',
+                                icon: 1,
+                            });
+                            layer.close(index);
+                            document.execCommand('Refresh');
+                            /*window.parent.document.getElementById('testIframe').contentWindow.location.reload(true);*/
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    //仓库
+    $.ajax({
+        url: "/warehouse/allware",
+        success: function (data) {
+            for (var i in data) {
+                $('#allWarehouse2:last').append("<option value=" + data[i].id + ">" + data[i].wareName + "</option>")
+            }
+        }
+    })
+
+    /* 仓库下拉框change事件 */
+    $('#allWarehouse2').bind("change", function () {
+        $('#dam_id2 option').not(":first").remove();
+        $.ajax({
+            async: 'false',
+            url: "/cargo/allCargoArea",
+            data: {
+                wareId: $("#allWarehouse2").val()
+            },
+            success: function (data) {
+                $('#dam_id2').empty();
+                for (var i in data) {
+                    $('#dam_id2:last').append("<option value=" + data[i].id + ">" + data[i].goodsName + "</option>")
+                }
+            }
+        })
+    })
+
+    /*货区下拉框change事件*/
+    $('#dam_id2').bind("change", function () {
+        $('#allShelves2 option').not(":first").remove();
+        $.ajax({
+            async: 'false',
+            url: "/cargo/allShelves",
+            data: {
+                damId: $("#dam_id2").val()
+            },
+            success: function (data) {
+                console.log(data);
+                $('#allShelves2').empty();
+                for (var i in data) {
+                    console.log(data[i].shelvesNo)
+                    $('#allShelves2:last').append("<option value=" + data[i].shelvesNo + ">" + data[i].shelvesNo + "</option>")
+                }
+            }
+        })
+    })
+
+    /*货位管理区域分配-编辑*/
+    $('.property_edit').on('click', function () {
+
+        var id2 = $(this).parent().parent().children("td:eq(0)").text();
+        var damId;
+        console.log(id2);
+        $.ajax({
+            data: {"id": id2},
+            type: 'post',
+            dataType: 'json',
+            url: '/cargo/findCargoById',
+            success: function (dd) {
+                console.log(dd);
+                document.getElementById('id2').value = dd.id;
+                document.getElementById('cargoNo2').value = dd.cargoNo;
+                document.getElementById('creatTime2').value = dd.creatTime;
+                document.getElementById('main_product2').value = dd.product;
+                $('#allWarehouse2').val(dd.wareId);
+                $('#dam_id2').empty();
+                $('#allShelves2').empty();
+                $('<option></option>').text(dd.damName).val(dd.damId).prop("selected", "selected").appendTo("#dam_id2");
+                $('<option></option>').text(dd.shelvesNo).val(dd.shelvesNo).prop("selected", "selected").appendTo("#allShelves2");
+                $('#status2').val(dd.status);
+                /*$('<option></option>').text(dd.status).val(dd.status).prop("selected", "selected").appendTo("#status2");*/
+            }
+        })
+
+        layer.open({
+            type: 1,
+            title: '货位编缉',
+            maxmin: true,
+            shadeClose: false, //点击遮罩关闭层
+            area: ['600px', ''],
+            content: $('#edit_menber_style'),
+            btn: ['保存', '取消'],
+            yes: function (index, layero) {
+                var num = 0;
+                var str = "";
+                $(".edit_menber input[type$='text']").each(function (n) {
+                    if ($(this).val() == "") {
+                        layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                            title: '提示框',
+                            icon: 0,
+                        });
+                        num++;
+                        return false;
+                    }
+                });
+                if (num > 0) {
+                    return false;
+                } else {
+                    var data = {
+                        "id": document.getElementById('id2').value
+                        , "cargoNo": document.getElementById('cargoNo2').value
+                        , "wareId": document.getElementById('allWarehouse2').value
+                        , "damId": document.getElementById('dam_id2').value
+                        , "shelvesNo": document.getElementById('allShelves2').value
+                        , "product": document.getElementById('main_product2').value
+                        , "creatTime": document.getElementById('creatTime2').value
+                        , "status": document.getElementById('status2').value
+                        , "remark": document.getElementById('remark2').value
+                    }
+                    console.log(data);
+                    console.log(JSON.stringify(data));
+                    $.ajax({
+                        url: '/cargo/updateCargo',
+                        type: 'post',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        success: function (d) {
+                        }
+                    });
+
+                    layer.alert('修改成功！', {
+                        title: '提示框',
+                        icon: 1,
+                    });
+                    layer.close(index);
+                    location.replace(location);
+                    /*window.parent.document.getElementById('iframe').contentWindow.location.reload(true);*/
+
+                }
+            }
+        });
+    });
+    jQuery(function ($) {
+        var oTable1 = $('#sample-table').dataTable({
+            "aaSorting": [
+                [1, "asc"]
+            ], //默认第几个排序
+            "bStateSave": true, //状态保存
+            "aoColumnDefs": []
+        });
+
+        $('table th input:checkbox').on('click', function () {
+            var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+                .each(function () {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+
+        });
+
+        $('[data-rel="tooltip"]').tooltip({
+            placement: tooltip_placement
+        });
+
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            var w2 = $source.width();
+
+            if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2)) return 'right';
+            return 'left';
+        }
+    });
+    $(function () {
+        $("#products_style").fix({
+            float: 'left',
+            //minStatue : true,
+            skin: 'green',
+            durationTime: false,
+            spacingw: 30, //设置隐藏时的距离
+            spacingh: 260, //设置显示时间距
+        });
+    });
+</script>
+<script type="text/javascript">
+    //初始化宽度、高度
+    $(".widget-box").height($(window).height() - 215);
+    $(".table_menu_list").width($(window).width() - 260);
+    $(".table_menu_list").height($(window).height() - 215);
+    //当文档窗口发生改变时 触发
+    $(window).resize(function () {
+        $(".widget-box").height($(window).height() - 215);
+        $(".table_menu_list").width($(window).width() - 260);
+        $(".table_menu_list").height($(window).height() - 215);
+    })
+
+    /*******树状图*******/
+    var setting = {
+        view: {
+            dblClickExpand: false,
+            showLine: false,
+            selectedMulti: false
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "pId",
+                rootPId: ""
+            }
+        },
+        callback: {
+            beforeClick: function (treeId, treeNode) {
+                var zTree = $.fn.zTree.getZTreeObj("tree");
+                if (treeNode.isParent) {
+                    zTree.expandNode(treeNode);
+                    return false;
+                } else {
+                    demoIframe.attr("src", treeNode.file + ".html");
+                    return true;
+                }
+            }
+        }
+    };
+
+    var zNodes = [{
+        id: 1,
+        pId: 0,
+        name: "121-宿迁仓",
+        open: true
+    },
+        {
+            id: 11,
+            pId: 1,
+            name: "A-成品区"
+        },
+        {
+            id: 12,
+            pId: 1,
+            name: "B-隔离区"
+        },
+        {
+            id: 121,
+            pId: 12,
+            name: "12414"
+        },
+    ];
+
+    var code;
+    var loadReady;
+
+    function showCode(str) {
+        if (!code) code = $("#code");
+        code.empty();
+        code.append("<li>" + str + "</li>");
+    }
+
+    $(document).ready(function () {
+        var t = $("#treeDemo");
+        t = $.fn.zTree.init(t, setting, zNodes);
+        demoIframe = $("#testIframe");
+        demoIframe.bind("load", loadReady);
+        var zTree = $.fn.zTree.getZTreeObj("tree");
+        /*zTree.selectNode(zTree.getNodeByParam("id", '11'));*/
+    });
+
+    /*货位-创建*/
+    function member_add(title, url, id, w, h) {
+        layer_show(title, url + '#?=' + id, w, h);
+    }
+
+    /*货位-停用*/
+    function member_stop(obj, id) {
+        layer.confirm('确认要修改为有货状态吗？', function (index) {
+            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" class="btn btn-xs " onClick="member_start(this,id)" href="javascript:;" title="无货"><i class="icon-ok bigger-120"></i></a>');
+            $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">有货</span>');
+            $(obj).remove();
+            layer.msg('有货!', {
+                icon: 5,
+                time: 1000
+            });
+        });
+    }
+
+    /*货位-启用*/
+    function member_start(obj, id) {
+        layer.confirm('确认要修改为无货状态吗？', function (index) {
+            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" class="btn btn-xs btn-success" onClick="member_stop(this,id)" href="javascript:;" title="有货"><i class="icon-ok bigger-120"></i></a>');
+            $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">无货</span>');
+            $(obj).remove();
+            layer.msg('无货!', {
+                icon: 6,
+                time: 1000
+            });
+        });
+    }
+
+    /*货位-编辑*/
+    function member_edit(title, url, id, w, h) {
+        layer_show(title, url, w, h);
+    }
+
+    /*模糊查询*/
+    $('.btn_search').click(function () {
+        $('#sample-table tbody tr').addClass("hidden");
+        $.ajax({
+            url: '/cargo/findByLike',
+            data: {
+                shelvesNo: $('#shelves_no').val(),
+                cargoNo: $('#cargo_no').val(),
+                status: $('#status').val()
+            },
+            success: function (data) {
+                console.log(data);
+                var manage1 = " <a style=\"text-decoration:none\" class=\"btn btn-xs \" onClick=\"member_start(this,id)\" href=\"javascript:;\" title=\"无货\"><i class=\"icon-ok bigger-120\"></i></a>";
+                var manage2 = "<a title=\"编辑\" class=\"btn btn-xs btn-success  property_edit\"><i class=\"icon-edit bigger-120\"></i></a>";
+                for (var i in data) {
+                    var tr = $("<tr></tr>");
+                    $(tr).append("<td>" + (Number(i) + 1) + "</td>");
+                    $(tr).append("<td>" + data[i].cargoNo + "</td>");
+                    $(tr).append("<td>" + data[i].shelvesNo + "</td>");
+                    $(tr).append("<td>" + data[i].damName + "</td>");
+                    $(tr).append("<td>" + data[i].wareName + "</td>");
+                    $(tr).append("<td>张三1</td>");
+                    $(tr).append("<td>15234672586</td>");
+                    $(tr).append("<td>" + data[i].product + "</td>");
+                    $(tr).append("<td>" + data[i].creatTime + "</td>");
+                    $(tr).append("<td>" + data[i].status + "</td>");
+                    $(tr).append("<td>" + manage1 + manage2 + "</td>");
+                    $('table tbody').append(tr);
+                }
+
+            }
+        })
+    })
+
+
+    //面包屑返回值
+    var index = parent.layer.getFrameIndex(window.name);
+    parent.layer.iframeAuto(index);
+    $('.Order_form').on('click', function () {
+        var cname = $(this).attr("title");
+        var chref = $(this).attr("href");
+        var cnames = parent.$('.Current_page').html();
+        var herf = parent.$("#iframe").attr("src");
+        parent.$('#parentIframe').html(cname);
+        parent.$('#iframe').attr("src", chref).ready();
+        ;
+        parent.$('#parentIframe').css("display", "inline-block");
+        parent.$('.Current_page').attr({
+            "name": herf,
+            "href": "javascript:void(0)"
+        }).css({
+            "color": "#4c8fbd",
+            "cursor": "pointer"
+        });
+        //parent.$('.Current_page').html("<a href='javascript:void(0)' name="+herf+" class='iframeurl'>" + cnames + "</a>");
+        parent.layer.close(index);
+
+    });
+</script>

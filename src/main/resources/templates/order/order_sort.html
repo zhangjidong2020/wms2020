@@ -1,0 +1,430 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link th:href="@{/erp/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/erp/css/style.css}"/>
+    <link th:href="@{/erp/assets/css/codemirror.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/font/css/font-awesome.min.css}"/>
+    <!--[if IE 7]>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/font-awesome-ie7.min.css}"/>
+    <![endif]-->
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace-ie.min.css}"/>
+    <![endif]-->
+    <script th:src="@{/erp/js/jquery-1.9.1.min.js}"></script>
+    <script th:src="@{/erp/assets/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/erp/Widget/Validform/5.3.2/Validform.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.bootstrap.js}"></script>
+    <script th:src="@{/erp/assets/js/typeahead-bs2.min.js}"></script>
+    <script th:src="@{/erp/assets/layer/layer.js}" type="text/javascript" th:inline="none"></script>
+    <script th:src="@{/erp/assets/js/jquery-ui-1.10.3.custom.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.ui.touch-punch.min.js}"></script>
+    <script th:src="@{/erp/assets/js/ace-elements.min.js}"></script>
+    <script th:src="@{/erp/assets/js/ace.min.js}"></script>
+    <script th:src="@{/erp/js/lrtk.js}" type="text/javascript" th:inline="none"></script>
+    <script th:src="@{/erp/assets/laydate/laydate.js}" type="text/javascript" th:inline="none"></script>
+    <title>订单排单</title></head>
+<body>
+
+<div class="margin clearfix">
+    <div class="stystems_style">
+        <div class="tabbable">
+            <div class="page-content clearfix">
+                <div id="Member_Ratings">
+
+                    <div class="tab-content">
+                        <div id="home" class="tab-pane active">
+                            <div class="search_style">
+                                <form>
+                                    <ul class="search_content clearfix">
+                                        <li><label class="l_f">订单编号</label><input name="orderId" type="text"
+                                                                                  id="orderId"
+                                                                                  class="text_add" placeholder="输入订单编号"
+                                                                                  style=" width:250px"/></li>
+
+                                        <li style="width:90px;">
+                                            <button type="button" class="btn_search" id="select"><i
+                                                    class="fa fa-search"></i>查询
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </form>
+
+                            </div>
+                            <table class="table table-striped table-bordered table-hover" id="sample-table">
+                                <thead>
+                                <tr>
+                                    <th width="80">序号</th>
+                                    <th width="150">订单编号</th>
+                                    <th width="150">订单类型</th>
+                                    <th width="150">生产计划编号</th>
+                                    <th width="100">责任产线</th>
+                                    <th width="100">生产数量</th>
+                                    <th width="120">开始生产日期</th>
+                                    <th width="120">结束生产日期</th>
+                                    <th width="100">备注</th>
+                                    <th width="100">状态</th>
+                                    <th width="100">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- <tr th:each="order: ${allSort}">
+                                     <td th:text="${order.get('id')}"></td>
+                                     <td th:text="${order.get('order_id')}"></td>
+                                     <td th:text="${order.get('order_type')}"></td>
+                                     <td th:text="${order.get('product_plan_no')}"></td>
+                                     <td th:text="${order.get('production_name')}"></td>
+                                     <td th:text="${order.get('number')}"></td>
+                                     <td th:text="${order.get('product_plan_time')}"></td>
+                                     <td th:text="${order.get('product_plan_overtime')}"></td>
+                                     <td th:text="${order.get('remark')}"></td>
+                                     <td th:text="${order.get('order_pro')}"></td>
+                                     <td class="td-manage">
+                                         <a title="排单" onclick="member_fh(this)" class="btn btn-xs btn-info" ><i class="bigger-10" style="fout-size:5">设置排单</i></a>
+                                     </td>
+                                 </tr>-->
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="position: absolute;right: 85px;">
+
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                    </div>
+
+
+                    <!--发货图层-->
+                    <div class="add_menber" id="add_menber_style" style="display:none">
+
+                        <ul class=" page-content">
+                            <li><label class="label_name">订单编号：</label><span class="add_name"><input readonly="readonly"
+                                                                                                     id="order_id"
+                                                                                                     name="设置排单"
+                                                                                                     type="text"
+                                                                                                     class="text_add"/></span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                            <li><label class="label_name">生产线：</label><span class="add_name"><select
+                                    onblur="judge_productline(this)" placeholder="请选择生产线" name='sldd'
+                                    style='width:200px' id="productLineId">
+  <option value='' selected>请选择产品线</option>
+
+    </select></span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                            <div class="prompt r_f"></div>
+                            </li>
+                            <li><label class="label_name">生产编号：</label><span class="add_name"><input
+                                    onblur="judge_productno(this)" placeholder="请输入生产编号" name="" type="text"
+                                    class="text_add" id="productPlanNo"/></span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                            <li><label class="label_name">生产时间：</label><input placeholder="请选择生产时间"
+                                                                              class="inline laydate-icon" id="start"
+                                                                              style=" margin-left:10px;"><span
+                                    class="add_name">
+</span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                            <li><span class="add_name" style="color:red">注意：设定的生产时必须按期生产。</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+
+    /*模糊查询功能以及查询*/
+    $(function () {
+        var table = $('#sample-table').dataTable({
+            searching: false,
+            serverSide: true,   //开始服务器分页
+            aoColumnDefs: [
+                {"orderable": false, "aTargets": [1, 2, 3, 4, 5, 6]}// 制定列不参与排序
+            ],
+            ajax: {
+                url: '[[@{/order/page2}]]',
+                type: 'post',
+                data: function (d) {
+
+                    var data = $('form').serialize();   //获取查询条件
+
+                    //获取分页信息
+                    var searchParams = {
+                        start: d.start,
+
+                        length: d.length,
+                    };
+                    data = data + '&' + $.param(searchParams);
+                    return data;
+
+                }
+            },
+            columns: [
+                {
+                    "data": "id", "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).text(row + 1);
+                    }
+                },
+                {"data": "order_id", 'sDefaultContent': ''},
+                {"data": "order_type", 'sDefaultContent': ''},
+                {"data": "product_plan_no", 'sDefaultContent': ''},
+                {"data": "production_name", 'sDefaultContent': ''},
+                {"data": "number", 'sDefaultContent': ''},
+                {"data": "product_plan_times", 'sDefaultContent': ''},
+                {"data": "product_plan_overtimes", 'sDefaultContent': ''},
+                {"data": "remark", 'sDefaultContent': ''},
+                {
+                    "data": "product_status", "createdCell": function (td, cellData, rowData, row, col) {
+                        if (cellData == "5") {
+                            $(td).empty().append('<span class="label label-success radius">待排单</span>');
+                        } else if (cellData == "6") {
+                            $(td).empty().append('<span class="label label-info radius">待生产</span>');
+                        } else if (cellData == "7") {
+                            $(td).empty().append('<span class="label label-info radius">生产中</span>');
+                        } else if (cellData == "8") {
+                            $(td).empty().append('<span class="label label-info radius">已完成</span>');
+                        } else if (cellData == "9") {
+                            $(td).empty().append('<span class="label label-info radius">已入库</span>');
+                        } else if (cellData == "10") {
+                            $(td).empty().append('<span class="label label-info radius">已结束</span>');
+                        }
+                    }
+                },
+                {
+                    "data": "product_status", "createdCell": function (td, cellData, rowData, row, col) {
+                        if (cellData == '5') {
+                            $(td).empty().append('<a id="gosort" title="排单" onclick="member_fh(this)" class="btn btn-xs btn-info" ><i class="bigger-10" style="fout-size:5">设置排单</i></a>');
+                        } else {
+                            $(td).empty().append('<a style="display: none" id="gosort" title="排单" onclick="member_fh(this)" class="btn btn-xs btn-info" ><i class="bigger-10" style="fout-size:5;">设置排单</i></a>');
+                        }
+
+                    }
+                },
+
+            ]
+        });
+
+        //搜索按钮事件
+        $('#select').click(function () {
+            table.fnUpdate();
+        })
+
+    })
+
+
+    /*发货*/
+    function member_fh(eq) {
+        var orderId = $(eq).parent().parent().children("td:eq(1)").text();
+        $("#order_id").val(orderId);
+        layer.open({
+            type: 1,
+            title: '确认排单',
+            maxmin: true,
+            shadeClose: false, //点击遮罩关闭层
+            area: ['800px', ''],
+            content: $('#add_menber_style'),
+            btn: ['确认', '取消'],
+            yes: function (index, layero) {
+                var num = 0;
+
+                /**
+                 * 判断不能让输入框为空
+                 * @param obj
+                 * @returns {boolean}
+                 */
+                if ($('#productLineId').val() == "") {
+                    $('#productLineId').css("border", "1px solid #f00");
+                    num++;
+                    layer.msg("请选择产线", {icon: 2, time: 1000});
+                } else {
+                    $('#productLineId').css("border", "1px solid #D5D5D5");
+                }
+
+                if ($('#productPlanNo').val() == "") {
+                    $('#productPlanNo').css("border", "1px solid #f00");
+                    num++;
+                    layer.msg("请输入生产编号", {icon: 2, time: 1000});
+                } else {
+                    $('#productPlanNo').css("border", "1px solid #D5D5D5");
+                }
+
+                if ($('#start').val() == "") {
+                    $('#start').css("border", "1px solid #f00");
+                    num++;
+                    layer.msg("请选择生产时间", {icon: 2, time: 1000});
+                } else {
+                    $('#start').css("border", "1px solid #D5D5D5");
+                }
+
+                if (num > 0) {
+                    return false;
+                } else {
+                    var data = {};
+                    data.orderId = $('#order_id').val();
+                    data.productLineId = $('#productLineId').val();
+                    data.productPlanNo = $('#productPlanNo').val();
+                    data.productPlanTime = $('#start').val();
+
+                    $.ajax({
+                        url: "[[@{/order/updateallsort}]]",
+                        type: 'post',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json',
+                        success: function (d) {
+                            var num = 0;
+                            var str = "";
+
+
+                            $(".add_menber input[type$='text']").each(function (n) {
+                                if ($(this).val() == "") {
+
+                                    layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                                        title: '提示框',
+                                        icon: 0,
+                                    });
+                                    num++;
+                                    return false;
+                                }
+                            });
+                            if (num > 0) {
+                                return false;
+                            } else {
+                                layer.alert('排单成功！', {
+                                    title: '提示框',
+                                    icon: 1,
+
+
+                                });
+
+                            }
+                            window.parent.document.getElementById('iframe').contentWindow.location.reload(true);
+                            /* layer.close(index);*/
+                        }
+                    });
+                }
+
+
+            }
+        })
+
+    }
+
+    $(function () {
+        $.ajax({
+            url: "[[@{/order/allproduction}]]",
+            success: function (d) {
+                if (d.rs) {
+                    var data = d.data;
+                    for (var i in data) {
+                        $('#productLineId:last').append("<option value=" + data[i].id + ">" + data[i].productionName + "</option>")
+                    }
+                } else {
+                    layer.msg('顾客加载失败', {icon: 2, time: 2000});
+                }
+
+
+            }
+        })
+    })
+
+
+    /*用户-删除*/
+    function member_del(obj, id) {
+        layer.confirm('确认要删除吗？', function (index) {
+            $(obj).parents("tr").remove();
+            layer.msg('已删除!', {icon: 1, time: 1000});
+        });
+    }
+
+    //时间
+    laydate.render({
+        elem: '#start',
+        type: 'datetime',
+        min: getNowFormatDate()
+    });
+
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + date.getHours() + seperator2 + date.getMinutes()
+            + seperator2 + date.getSeconds();
+        return currentdate;
+    }
+
+    function judge_productline(obj) {
+        if ($(obj).val() == "") {
+            $(obj).css("border", "1px solid #f00");
+            layer.msg("请选择生产线", {icon: 2, time: 1000});
+            return true;
+        } else {
+            $(obj).css("border", "1px solid #D5D5D5");
+            return false;
+        }
+    }
+
+    function judge_productno(obj) {
+        if ($(obj).val() == "") {
+            $(obj).css("border", "1px solid #f00");
+            layer.msg("请输入生产编号", {icon: 2, time: 1000});
+            return true;
+        } else {
+            $.ajax({
+                url: "[[@{/order/allproductionno}]]",
+                success: function (d) {
+                    if (d.rs) {
+                        var data = d.data;
+
+                        for (var i in data) {
+                            if (data[i] == $('#productPlanNo').val()) {
+
+                                layer.msg('生产编号已存在', {icon: 2, time: 2000});
+                                $('#productPlanNo').val("");
+                                return;
+
+                            } else {
+                                $(obj).css("border", "1px solid #D5D5D5");
+                            }
+
+                        }
+                    } else {
+                        layer.msg('生产编号加载失败', {icon: 2, time: 2000});
+                    }
+
+
+                }
+            })
+
+            $(obj).css("border", "1px solid #D5D5D5");
+            return false;
+        }
+    }
+
+
+</script>

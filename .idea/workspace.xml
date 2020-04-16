@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ebe86c58-fa60-4785-b5db-305e9dba5f9f" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="C:\Users\User\.m2\repository" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1ZnNc1ECbJa3h0aSLQajXEYZY5o" />
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1585470753951" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.12515645" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\bigdata\代码\ERP\src\main\resources\static" />
+      <recent name="D:\bigdata\代码\ERP\src\main\java\ERP\pojo" />
+      <recent name="D:\bigdata\代码\ERP\src\main\resources" />
+      <recent name="D:\bigdata\代码\ERP\src\main\resources\static\erp\js" />
+      <recent name="D:\bigdata\代码\ERP\src\main\resources\static\erp" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ERP.utils" />
+      <recent name="ERP.mapper" />
+      <recent name="ERP.service" />
+      <recent name="ERP.service.impl" />
+      <recent name="ERP.shiro" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\bigdata\代码\ERP\src\main\resources\static\erp" />
+      <recent name="D:\bigdata\代码\ERP\src\main\resources\static" />
+      <recent name="D:\bigdata\代码\ERP\src\main\resources\mapper" />
+      <recent name="D:\bigdata\代码\ERP\src\main\java\ERP\pojo" />
+      <recent name="D:\bigdata\代码\ERP\src\main\resources\templates" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="ERP" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ERP.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="ERP.Application" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.Application" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ebe86c58-fa60-4785-b5db-305e9dba5f9f" name="Default Changelist" comment="" />
+      <created>1584444156161</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1584444156161</updated>
+      <workItem from="1584444160281" duration="2151000" />
+      <workItem from="1585230511144" duration="911000" />
+      <workItem from="1585231969118" duration="2937000" />
+      <workItem from="1585277030893" duration="820000" />
+      <workItem from="1585280052309" duration="2163000" />
+      <workItem from="1585315748339" duration="568000" />
+      <workItem from="1585466930602" duration="3727000" />
+      <workItem from="1585470974677" duration="402000" />
+      <workItem from="1585471697765" duration="612000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+</project>

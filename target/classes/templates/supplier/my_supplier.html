@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.springframework.org/schema/jdbc">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link th:href="@{/erp/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/erp/css/style.css}"/>
+    <link th:href="@{/erp/assets/css/codemirror.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/font/css/font-awesome.min.css}"/>
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace-ie.min.css}"/>
+    <![endif]-->
+    <script th:src="@{/erp/js/jquery-1.9.1.min.js}"></script>
+    <script th:src="@{/erp/assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{/erp/assets/js/typeahead-bs2.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.bootstrap.js}"></script>
+    <script th:src="@{/erp/assets/layer/layer.js}" type="text/javascript"></script>
+    <script th:src="@{/erp/assets/laydate/laydate.js}" type="text/javascript"></script>
+    <title>我的供应商</title>
+    <style type="text/css">
+        .a1 {
+            visibility: hidden;
+        }
+    </style>
+</head>
+
+<body>
+<div class="margin clearfix">
+    <div class="" id="Other_Management">
+        <div class="search_style">
+            <form>
+                <ul class="search_content clearfix">
+                    <li><label class="l_f">选择地区:</label>
+                        <span class="formControls col-4" style="width:110px">
+                 <select style=" width:90px" id="province" onchange="chooseProvince(this)" name="companyProvince"
+                         class="form-control">
+                    <option value="">请选择省</option>
+                 </select>
+             </span>
+
+                        <span class="formControls col-4" style="width:110px">
+                <select style=" width:90px" class="form-control" id="city" name="companyCity"
+                        onchange="chooseCity(this)">
+                    <option value="">请选择市</option>
+                </select>
+             </span>
+
+                        <span class="formControls col-4" style="width:110px">
+                <select style=" width:90px" class="form-control" id="area" name="companyArea">
+                    <option value="">请选择区</option>
+                </select>
+		     </span>
+                    </li>
+                    <li><label class="l_f">企业名称:</label><input name="companyName" type="text" style=" width:260px"
+                                                               id="companyName"
+                                                               onkeyup="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')"
+                                                               onafterpaste="this.value=this.value.replace(//[^\w\u4E00-\u9FA5]/g,'')"/>
+                    </li>
+                    &nbsp;
+                    <li style="width:100px;">
+                        <button type="button" class="btn_search" id="select"><i class="fa fa-search"></i>查询</button>
+                    </li>
+                </ul>
+                <br/>
+            </form>
+        </div>
+        <div class="Store_Introduction">
+            <div class="list_style">
+                <table class="table table-striped table-bordered table-hover" id="sample-table">
+                    <thead>
+                    <tr>
+                        <th width="40">序号</th>
+                        <th width="60">企业名称</th>
+                        <th width="60">区域</th>
+                        <th width="60">主要经营</th>
+
+                        <th width="60">联系人</th>
+                        <th width="60">联系电话</th>
+                        <th width="60">备注</th>
+                        <th width="40">操作</th>
+                        <th hidden="hidden" width="20">企业ID</th>
+                        <td hidden="hidden"></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!--修改企业备注-->
+<div class="edit_menber" id="edit_menber_style" style="display:none">
+    <ul class=" page-content">
+        <div class="Operate_cont clearfix" hidden="hidden">
+            <label class="form-label"><span class="c-red"></span>公司ID：</label>
+            <div class="formControls ">
+                <input type="text" class="input-text" value="" placeholder="" id="companyId" name="公司ID">
+            </div>
+        </div>
+
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red"></span>公司名称：</label>
+            <div class="formControls ">
+                <input type="text" class="input-text" value="" placeholder="" id="companyName2" name="公司名称"
+                       readonly="readonly">
+            </div>
+        </div>
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red"></span>区域：</label>
+            <div class="formControls ">
+                <input type="text" class="input-text" value="" placeholder="" id="area2" name="区域" readonly="readonly">
+            </div>
+        </div>
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red"></span>主要经营：</label>
+            <div class="formControls ">
+                <input type="text" class="input-text" value="" placeholder="" id="businessScope" name="主要经营"
+                       readonly="readonly">
+            </div>
+        </div>
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red"></span>联系人：</label>
+            <div class="formControls ">
+                <input type="text" class="input-text" value="" placeholder="" id="legal" name="联系人" readonly="readonly">
+            </div>
+        </div>
+        <div class="Operate_cont clearfix">
+            <label class="form-label"><span class="c-red"></span>联系电话：</label>
+            <div class="formControls ">
+                <input type="text" class="input-text" value="" placeholder="" id="legalTel" name="联系方式"
+                       readonly="readonly">
+            </div>
+        </div>
+        <div class="Operate_cont clearfix">
+            <label class="form-label">备注：</label>
+            <div class="formControls">
+                    <textarea value="" name="rRemark" id="rRemark" rows="" class="textarea"
+                              placeholder="说点什么...最少输入10个字符" datatype="*10-100" oninput="text_length(this)"
+                              th:maxlength="100">
+                    </textarea>
+                <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+            </div>
+        </div>
+        <div class="">
+            <div class="" style=" text-align:center">
+            </div>
+        </div>
+    </ul>
+</div>
+</body>
+</html>
+<script>
+    function text_length(obj) {
+        $(obj).next("p").find(".textarea-length").text($(obj).val().length)
+    }
+
+    $(function () {
+        var table = $('#sample-table').dataTable({
+            "autoWidth": false,
+            searching: false,
+            serverSide: true,   //开始服务器分页
+            aoColumnDefs: [
+                {"orderable": false, "aTargets": [1, 2, 3, 4, 5, 6]}// 制定列不参与排序
+            ],
+            ajax: {
+                url: '/relation/page',
+                type: 'post',
+                data: function (d) {
+                    var data = $('form').serialize();   //获取查询条件
+
+                    //获取分页信息
+                    var searchParams = {
+                        start: d.start,
+
+                        length: d.length,
+                    };
+                    data = data + '&' + $.param(searchParams);
+                    return data;
+                }
+            },
+            columns: [
+                {
+                    "data": "company.companyName", "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).empty().append(row + 1);
+                    }
+                },
+                {
+                    "data": "company.companyName", "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).empty().append('<a href="/relation/detailsupplier" title=\"客户详情\">' + rowData.company.companyName + '</a>');
+                    }
+                },
+                {
+                    "data": function (td) {
+                        return td.company.companyProvince + td.company.companyArea;
+                    }
+                },
+                {"data": "company.businessScope"},
+                {"data": "company.legal"},
+                {"data": "company.legalTel"},
+                {"data": "rremark"},
+                {
+                    "data": "company.id", "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).empty().append('<a title="修改备注" onclick="member_edit(this)" class="btn btn-xs btn-info "  id="update" href="javascript:;" ><i class="fa" >修改</i></a>\n' +
+                            '<a title="订购下单" href="/buy/into" class="btn btn-xs btn-info"><i class="fa">订购</i></a>');
+                    }
+                },
+                {"data": "company.id", "className": "hidden"}
+            ]
+        });
+
+        //搜索按钮事件
+        $('#select').click(function () {
+            table.fnUpdate();
+        })
+    })
+
+    /*我的供应商管理-编辑*/
+    function member_edit(e) {
+        var companyId = $(e).parent().parent().children("td:eq(8)").text();
+        document.getElementById('companyName2').value = $(e).parent().parent().children("td:eq(1)").text();
+        document.getElementById('area2').value = $(e).parent().parent().children("td:eq(2)").text();
+        document.getElementById('businessScope').value = $(e).parent().parent().children("td:eq(3)").text();
+        document.getElementById('legal').value = $(e).parent().parent().children("td:eq(4)").text();
+        document.getElementById('legalTel').value = $(e).parent().parent().children("td:eq(5)").text();
+        document.getElementById('rRemark').value = $(e).parent().parent().children("td:eq(6)").text();
+        document.getElementById('companyId').value = companyId;
+        layer.open({
+            type: 1,
+            title: '修改供应商备注',
+            maxmin: true,
+            shadeClose: false, //点击遮罩关闭层
+            area: ['600px', ''],
+            content: $('#edit_menber_style'),
+            btn: ['提交', '取消'],
+            yes: function (index, layero) {
+                var num = 0;
+                var str = "";
+                $(".edit_menber input[type$='submit']").each(function (n) {
+                    if ($(this).val() == "") {
+
+                        layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                            title: '提示框',
+                            icon: 0,
+                        });
+                        num++;
+                        return false;
+                    }
+                });
+                if (num > 0) {
+                    return false;
+                } else {
+                    $.ajax({
+                        data: {
+                            "companyId": document.getElementById('companyId').value
+                            , "rRemark": document.getElementById('rRemark').value
+                        },
+                        type: 'post',
+                        dataType: 'josn',
+                        url: '/relation/updateCompany',
+                        success: function (data) {
+                            if (data.rs) {
+                                alert(data);
+                            } else {
+                                layer.msg(data, msg, {icon: 2, time: 2000});
+                            }
+                        }
+                    });
+
+                    layer.alert('修改成功！', {
+                        title: '提示框',
+                        icon: 1,
+                    });
+                    layer.close(index);
+                    $('#select').click();
+                }
+            }
+        });
+    }
+</script>
+
+<script th:src="@{/erp/js/company.js}"></script>
+<script>
+</script>

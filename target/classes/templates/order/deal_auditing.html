@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link th:href="@{/erp/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/erp/css/style.css}"/>
+    <link th:href="@{/erp/assets/css/codemirror.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/font/css/font-awesome.min.css}"/>
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace-ie.min.css}"/>
+    <![endif]-->
+    <script th:src="@{/erp/js/jquery-1.9.1.min.js}"></script>
+    <script th:src="@{/erp/assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{/erp/assets/js/typeahead-bs2.min.js}"></script>
+    <script type="text/javascript" th:src="@{/erp/js/H-ui.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.bootstrap.js}"></script>
+    <script th:src="@{/erp/assets/layer/layer.js}" type="text/javascript"></script>
+    <script th:src="@{/erp/assets/laydate/laydate.js}" type="text/javascript"></script>
+    <script th:src="@{/erp/assets/js/jquery.easy-pie-chart.min.js}"></script>
+    <script th:src="@{/erp/js/lrtk.js}" type="text/javascript"></script>
+    <title>订单详细</title>
+</head>
+
+<body>
+<div class="margin clearfix">
+    <div class="Order_Details_style">
+        <div class="Numbering">订单编号:<b th:text="${orderByOrderID.get('order_id')}"></b></div>
+    </div>
+    <div class="detailed_style">
+        <!--收件人信息-->
+        <div class="Receiver_style">
+            <div class="title_name">收件人信息</div>
+            <div class="Info_style clearfix">
+                <div class="col-xs-3">
+                    <label class="label_name" for="form-field-2"> 收件人姓名：<span
+                            th:text="${orderByOrderID.get('company_name')}"></span> </label>
+                    <div class="o_content"></div>
+                </div>
+                <div class="col-xs-3">
+                    <label class="label_name" for="form-field-2"> 收件人电话：<span
+                            th:text="${orderByOrderID.get('fixed_tel')}"></span> </label>
+                    <div class="o_content"></div>
+                </div>
+                <div class="col-xs-3">
+                    <label class="label_name" for="form-field-2"> 收件地邮编： </label>
+                    <div class="o_content">725000</div>
+                </div>
+                <div class="col-xs-3">
+                    <label class="label_name" for="form-field-2"> 收件地址：<span
+                            th:text="${orderByOrderID.get('company_province')}+${orderByOrderID.get('company_city')}+${orderByOrderID.get('company_area')}+${orderByOrderID.get('company_address')}"></span>
+                    </label>
+                    <div class="o_content"></div>
+                </div>
+            </div>
+        </div>
+        <!--订单信息-->
+        <div class="product_style">
+            <div class="title_name">产品信息</div>
+            <div class="Info_style clearfix">
+                <div class="product_info clearfix">
+                    <a href="#" class="img_link"><img th:src="'/images/'+${orderByOrderID.get('p_img')}"/></a>
+                    <span>
+      <a href="#" class="name_link">好品质好价格，呈现真实的美!电池，网上购物就选JD，多仓直发 极速配送。
+</a>
+      <b>旭派，个头小</b>
+      <p>规格：<i class="price" th:text="${orderByOrderID.get('p_price')}+'元/个'"></i></p>
+          <p>重量：<i class="price" th:text="${orderByOrderID.get('p_quality')}+'kg'"></i></p>
+      <p>价格：<i class="price" th:text="${orderByOrderID.get('p_price')}+'￥'"></i></p>
+      <p>状态：<i class="label label-success radius" th:text="${findstatus.get('status')}"></i></p>
+      </span>
+                </div>
+
+
+            </div>
+        </div>
+        <!--总价-->
+        <div class="Total_style">
+            <div class="Info_style clearfix">
+                <div class="col-xs-3">
+                    <label class="label_name" for="form-field-2"> 支付方式：<span
+                            th:text="${orderByOrderID.get('order_type')}"></span> </label>
+                    <div class="o_content"></div>
+                </div>
+                <div class="col-xs-3">
+                    <label class="label_name" for="form-field-2"> 支付状态： </label>
+                    <div class="o_content">已付款</div>
+                </div>
+                <div class="col-xs-3">
+                    <label class="label_name" for="form-field-2"> 订单生成日期：<span
+                            th:text="${orderByOrderID.get('deal_time')}"></span> </label>
+                    <div class="o_content"></div>
+                </div>
+                <div class="col-xs-3">
+                    <label class="label_name" for="form-field-2"> 物流信息：<span
+                            th:text="${orderByOrderID.get('logistics_name')}"></span> </label>
+                    <div class="o_content"></div>
+                </div>
+                <div class="col-xs-3">
+                    <label class="label_name" for="form-field-2"> 发货日期：<span
+                            th:text="${orderByOrderID.get('shipping_date')}"></span> </label>
+                    <div class="o_content"></div>
+                </div>
+            </div>
+            <div class="Total_m_style"><span class="Total">总数：<span
+                    th:text="${orderByOrderID.get('number')}"></span></span><span class="Total_price">总价：<b
+                    th:text="${orderByOrderID.get('money')}"></b>元</span></div>
+        </div>
+
+        <!--物流信息-->
+        <div class="Logistics_style clearfix">
+            <div class="title_name">物流信息</div>
+            <!--<div class="prompt"><img src="images/meiyou.png" /><p>暂无物流信息！</p></div>-->
+            <div data-mohe-type="kuaidi_new" class="g-mohe " id="mohe-kuaidi_new">
+                <div id="mohe-kuaidi_new_nucom">
+                    <div class="mohe-wrap mh-wrap">
+                        <div class="mh-cont mh-list-wrap mh-unfold">
+                            <div class="mh-list">
+                                <ul>
+                                    <li class="first">
+                                        <p>2015-04-28 11:23:28</p>
+                                        <p>包裹正在览件，签收：小王</p>
+                                        <span class="before"></span><span class="after"></span><i
+                                            class="mh-icon mh-icon-new"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="Button_operation">
+            <button onClick="javascrtpt:window.location.href='/order/into'" class="btn btn-primary radius"
+                    type="submit"><i class="icon-save "></i>返回上一步
+            </button>
+
+            <button onClick="javascrtpt:window.location.href='/order/into' " class="btn btn-default radius"
+                    type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;
+            </button>
+        </div>
+
+
+    </div>
+</div>
+</body>
+</html>

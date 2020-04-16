@@ -1,0 +1,813 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link th:href="@{/erp/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/erp/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/erp/assets/css/codemirror.css}" rel="stylesheet"/>
+    <link th:href="@{/erp/assets/css/ace.min.css}" rel="stylesheet"/>
+    <link th:href="@{/erp/assets/css/font-awesome.min.css}" rel="stylesheet"/>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+    <!--[if IE 7]>
+    <link th:href="@{/erp/assets/css/font-awesome-ie7.min.css}" rel="stylesheet"/>
+    <![endif]-->
+    <!--[if lte IE 8]>
+    <link th:href="@{/erp/assets/css/ace-ie.min.css}" rel="stylesheet"/>
+    <![endif]-->
+    <script th:src="@{/erp/assets/js/jquery.min.js}"></script>
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <![endif]-->
+    <!--[if !IE]> -->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script th:src='@{/erp/assets/js/jquery-2.0.3.min.js}'>" + "<" + "/script>");
+    </script>
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+        window.jQuery || document.write("<script th:src='@{/erp/assets/js/jquery-1.10.2.min.js}'>" + "<" + "/script>");
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script th:src='@{/erp/assets/js/jquery.mobile.custom.min.js}'>" + "<" + "/script>");
+    </script>
+
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=YNnrbmm4DgiiZGVdPaldXOGhGKZ9iGeG"></script>
+
+    <script th:src="@{/erp/assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{/erp/assets/js/typeahead-bs2.min.js}"></script>
+    <!-- page specific plugin scripts -->
+    <script th:src="@{/erp/assets/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.bootstrap.js}"></script>
+    <script th:src="@{/erp/assets/layer/layer.js}" type="text/javascript"></script>
+    <script th:src="@{/erp/assets/laydate/laydate.js}" type="text/javascript"></script>
+    <title>仓库管理</title>
+</head>
+<body>
+<div class="page-content clearfix">
+    <div id="Member_Ratings">
+        <div class="d_Confirm_Order_style">
+            <div class="search_style">
+                <form>
+                    <ul class="search_content clearfix">
+                        <li>
+                            <label class="l_f">仓库名称</label>
+                            <select name="wareName" id="select" style="margin-left:10px;width:180px;">
+                                <option value="">请选择仓库</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label class="l_f">创建时间</label>
+                            <input class="inline laydate-icon" name="deteTime" id="start" style=" margin-left:10px;">
+                        </li>
+                        <li style="width:90px;">
+                            <button type="button" class="btn_search" id="btn_search"><i class="icon-search"></i>查询
+                            </button>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+            <!---->
+            <div class="border clearfix"><span class="l_f"> <a href="javascript:;" id="property_add" onclick="add(this)"
+                                                               class="btn btn-warning"><i class="icon-plus"></i>新增仓库</a>  </span>
+            </div>
+            <!---->
+            <div class="table_menu_list">
+                <table class="table table-striped table-bordered table-hover" id="sample-table">
+                    <thead>
+                    <tr id="row">
+
+                        <th width="100px">序号</th>
+                        <th width="150px">仓库编号</th>
+                        <th width="100px">仓库名称</th>
+                        <th width="100px">负责人</a></th>
+                        <th width="100px">联系电话</th>
+                        <th width="120px">货区数目</th>
+                        <th hidden="hidden"/>
+                        <th hidden="hidden"/>
+                        <th width="220px">仓库描述</th>
+                        <th width="180px">创建时间</th>
+                        <th width="70px">状态</th>
+                        <th width="150px">操作</th>
+                        <th hidden="hidden"/>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加区域分配图层-->
+<div class="add_menber" id="add_menber_style" style="display:none">
+    <form id="form1">
+        <ul class=" page-content">
+            <div class="Operate_cont clearfix">
+                <label class="form-label"><span class="c-red">*</span>仓库编号：</label>
+                <div class="formControls " style="width:280px;">
+                    <input type="text" class="input-text" onblur="wareNo()" value="" placeholder="" id="ware_no"
+                           name="仓库编号">
+                </div>
+            </div>
+            <div class="Operate_cont clearfix">
+                <label class="form-label"><span class="c-red">*</span>仓库名称：</label>
+                <div class="formControls ">
+                    <input type="text" class="input-text" onblur="wareName()" value="" placeholder="" id="ware_name"
+                           name="仓库名称">
+                </div>
+            </div>
+            <div class="Operate_cont clearfix">
+                <label class="form-label"><span class="c-red">*</span>负责人：</label>
+                <div class="formControls ">
+                    <input type="text" class="input-text" onblur="fuzeren()" value="" placeholder="" id="person"
+                           name="负责人">
+                </div>
+            </div>
+            <div class="Operate_cont clearfix">
+                <label class="form-label"><span class="c-red">*</span>联系电话：</label>
+                <div class="formControls ">
+                    <input type="text" class="input-text" onblur="dianhua()" value="" placeholder="" id="telephone"
+                           name="联系电话">
+                </div>
+            </div>
+            <div class="Operate_cont clearfix">
+                <label class="form-label"><span class="c-red">*</span>货区数目：</label>
+                <div class="formControls ">
+                    <input type="text" class="input-text" onblur="cargoNum()" value="" placeholder="" id="cargo_num"
+                           name="货区数目">
+                </div>
+            </div>
+            <div class="Operate_cont clearfix">
+                <label class="form-label"><span class="c-red">*</span>详细地址：</label>
+                <div class="formControls ">
+                    <input type="text" class="input-text" onblur="dizhi()" value="" placeholder="" id="address"
+                           name="详细地址">
+                </div>
+            </div>
+            <div class="Operate_cont clearfix">
+                <label class="form-label"><span class="c-red">*</span>创建时间：</label>
+                <div class="formControls ">
+                    <input type="date" class="input-text" placeholder="" id="dete_time" name="创建时间"/>
+                </div>
+            </div>
+            <div class="Operate_cont clearfix">
+                <label class="form-label"><span class="c-red">*</span>经纬度：</label>
+                <div class="formControls ">
+                    <input type="text" class="input-text" onclick="jingwei()" value="" placeholder="" id="place"
+                           name="经纬度">
+                    <a data-toggle="tab" id="area" href="#homerr">&nbsp;地理位置</a>
+                </div>
+            </div>
+            <div class="Operate_cont clearfix">
+                <label class="form-label"><span class="c-red"></span>仓库详情：</label>
+                <div class="formControls "><textarea id="details"></textarea>
+                </div>
+            </div>
+        </ul>
+    </form>
+</div>
+</div>
+</div>
+</div>
+<div id="homerr" class="tab-pane" style="display:none;">
+    <div style="width:730px;margin:auto;">
+        <label style="width:260px"> 输入地址：<input id="text_" type="text" value="中国"/></label>
+        <input type="button" value="查询" class="btn btn-xs btn-info" onClick="searchByStationName();"/>
+        <label style="margin-left:50px;width:260px">经纬度：<input id="result_" type="text"/></label>
+
+        <div id="container"
+             style="position: absolute;
+                margin-top:30px; 
+                width: 730px; 
+                height: 590px; 
+                top: 50px;
+                border: 1px solid gray;
+                overflow:hidden;">
+        </div>
+    </div>
+</div>
+<!--编辑区域分配图层-->
+<div class="edit_menber" id="edit_menber_style" style="display:none">
+    <ul class=" page-content">
+        <div class="Operate_cont clearfix">
+            <div class="brand_detailed">
+                <ul class="Info_style clearfix" style="width:510px; margin-top:0px;">
+                    <li><label class="label_name">仓库编号：</label> <span class="name"><input name="仓库编号" type="text"
+                                                                                          class="text_add"
+                                                                                          style="width:140px;" value=" "
+                                                                                          id="ware_no1"></span></li>
+                    <li><label class="label_name">仓库名称：</label><span class="name"><input name="仓库名称" type="text"
+                                                                                         class="text_add"
+                                                                                         onblur="wareName1()"
+                                                                                         style="width:140px;" value=" "
+                                                                                         id="ware_name1"></span></li>
+                    <li><label class="label_name">负责人：</label> <span class="name"><input name="负责人" type="text"
+                                                                                         class="text_add"
+                                                                                         onblur="person1()"
+                                                                                         style="width:140px;" value=" "
+                                                                                         id="person1"></span></li>
+                    <li><label class="label_name">联系电话：</label><span class="name"><input name="联系电话" type="text"
+                                                                                         class="text_add"
+                                                                                         onblur="telephone1()"
+                                                                                         style="width:140px;" value=" "
+                                                                                         id="telephone1"></span></li>
+                    <li><label class="label_name">货区数目：</label><span class="name"><input name="货区数目" type="text"
+                                                                                         class="text_add"
+                                                                                         onblur="cargoNum1()"
+                                                                                         style="width:140px;" value=" "
+                                                                                         id="cargo_num1"></span></li>
+                    <li style="width:500px;"><label class="label_name">详细地址：</label><span class="name"><input
+                            name="详细地址"
+                            type="text"
+                            class="text_add"
+
+                            style="width:380px;"
+                            value=" "
+                            id="address1"></span>
+                    </li>
+                    <li><label class="label_name">创建时间：</label><span class="name" id="dete_time1">2019</span></li>
+                    <li><label class="label_name">状态：</label><span class="name" id="status">已启用</span></li>
+                    <li class="b_Introduce"><label class="label_name">仓库描述：</label><br/><span class="name"><textarea
+                            cols="40" rows="8" id="details1"> </textarea></span></li>
+                </ul>
+
+            </div>
+        </div>
+    </ul>
+</div>
+
+<!-- 百度地图 -->
+<script type="text/javascript">
+    var map = new BMap.Map("container");
+    map.centerAndZoom("中国", 12);
+    map.enableScrollWheelZoom();    //启用滚轮放大缩小，默认禁用
+    map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+
+    map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
+    map.addControl(new BMap.OverviewMapControl()); //添加默认缩略地图控件
+    map.addControl(new BMap.OverviewMapControl({isOpen: true, anchor: BMAP_ANCHOR_BOTTOM_RIGHT}));   //右下角，打开
+
+    map.addEventListener("click", function (e) {   //单击地图，形成折线覆盖物
+
+        document.getElementById("result_").value = e.point.lng + "," + e.point.lat;
+
+    });
+
+    var localSearch = new BMap.LocalSearch(map);
+    localSearch.enableAutoViewport(); //允许自动调节窗体大小
+    function searchByStationName() {
+        map.clearOverlays();//清空原来的标注
+        var keyword = document.getElementById("text_").value;
+        localSearch.setSearchCompleteCallback(function (searchResult) {
+            var poi = searchResult.getPoi(0);
+            document.getElementById("result_").value = poi.point.lng + "," + poi.point.lat;
+            map.centerAndZoom(poi.point, 13);
+            var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));  // 创建标注，为要查询的地方对应的经纬度
+            map.addOverlay(marker);
+            var content = document.getElementById("text_").value + "<br/><br/>经度：" + poi.point.lng + "<br/>纬度：" + poi.point.lat;
+            var infoWindow = new BMap.InfoWindow("<p style='font-size:14px;'>" + content + "</p>");
+            marker.addEventListener("click", function () {
+                this.openInfoWindow(infoWindow);
+            });
+            // marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        });
+
+        localSearch.search(keyword);
+    }
+</script>
+
+<script type="text/javascript">
+    //正则表达式
+    var test1 = /^(?=.*?[\u4E00-\u9FA5]){2,100}/;//仓库名称不能少于2个字符，不能都是数字和字母，必须有汉字
+    var test2 = /^[\u4e00-\u9fa5]{2,}$/;//负责人(两个以上汉字)
+    var test3 = /^1[34578]\d{9}$/;   //手机号
+    var test4 = /^[0-9]*$/;  //只能输入数字
+    var arr = [test1, test2, test3, test4];
+    //错误提示信息
+    var arr2 = ["仓库名称不正确", "负责人只能输入汉字", "请输入正确的手机号", "货区数目只能为数字"]
+    //添加表单的输入框id
+    var arr4 = ["ware_name", "person", "telephone", "cargo_num"];
+    //修改表单的输入框id
+    var arr5 = ["ware_name1", "person1", "telephone1", "cargo_num1"]
+    //判断编号是否存在
+    var wareNonum = [];
+
+    /* 查询编号集 */
+    function add(eq) {
+        /* 验证编号是否重复 */
+        $("#sample-table tr").each(function (n) {
+            wareNonum.push($(this).children("td:eq(1)").text());
+        });
+        console.log(wareNonum);
+    }
+
+    /* 添加正则点击事件 */
+    function wareNo() {
+        for (var i in wareNonum) {
+            if (wareNonum[i] == $("#ware_no").val()) {
+                layer.msg("编号已经存在", {icon: 2, time: 2000});
+            }
+        }
+    }
+
+    function wareName() {
+        if (test1.test($("#ware_name").val())) {
+            return true;
+        } else {
+            layer.msg("仓库名称由汉字，数字，字母组成", {icon: 2, time: 2000});
+        }
+    }
+
+    function fuzeren() {
+        if (test2.test($("#person").val())) {
+            return true;
+        } else {
+            layer.msg("负责人只能输入汉字", {icon: 2, time: 2000});
+        }
+    }
+
+    function dianhua() {
+        if (test3.test($("#telephone").val())) {
+            return true;
+        } else {
+            layer.msg("电话号码格式不正确", {icon: 2, time: 2000});
+        }
+    }
+
+    function cargoNum() {
+        if (test4.test($("#cargo_num").val()) && !$("#cargo_num").val() == "") {
+            return true;
+        } else {
+            layer.msg("货区数目只能由数字组成", {icon: 2, time: 2000});
+        }
+    }
+
+    function dizhi() {
+        if ($("#address").val() == '') {
+            layer.msg("地址不能为空", {icon: 2, time: 2000});
+        }
+    }
+
+    function jingwei() {
+        if ($("#place").val() == "") {
+            layer.msg("请点击右边'地理位置'选择你想要的位置", {icon: 1, time: 2000});
+        }
+    }
+
+    /*添加仓库*/
+    $('#property_add').on('click', function () {
+        $("#form1")[0].reset();
+        layer.open({
+            type: 1,
+            title: '添加仓库',
+            maxmin: true,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['600px', ''],
+            content: $('#add_menber_style'),
+            btn: ['提交', '取消'],
+            yes: function (index, layero) {
+                /* 这里写添加仓库的ajax */
+                var data = {};  //定义一个JQ对象，放添加弹窗表单的信息
+                data.wareNo = $("#ware_no").val();
+                data.wareName = $("#ware_name").val();
+                data.person = $("#person").val();
+                data.telephone = $("#telephone").val();
+                data.cargoNum = $("#cargo_num").val();
+                data.address = $("#address").val();
+                data.details = $("#details").val();
+                data.deteTime = $("#dete_time").val()
+                data.place = $("#place").val();
+                console.log(data);
+                var num = 0;
+                var str = "";
+                console.log($("#dete_time").val());
+
+                /* 验证是否为空 */
+                $(".add_menber input[type$='text']").each(function (n) {
+                    if ($(this).val() == "")/* 在这里写正则表达式 */
+                    {
+                        layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                            title: '提示框',
+                            icon: 0,
+                        });
+                        num++;
+                        return false;
+                    }
+                });
+                if (num > 0) {
+                    return false;
+                }
+                /* 验证时间是否为空 */
+                if ($("#dete_time").val() == '') {
+                    layer.alert(str += "" + $("#dete_time").attr("name") + "不能为空！\r\n", {
+                        title: '提示框',
+                        icon: 0,
+                    });
+                    return false;
+                }
+
+                /* 验证编号是否存在 */
+                for (var i in wareNonum) {
+                    if (wareNonum[i] == $("#ware_no").val()) {
+                        layer.msg("仓库编号已经存在", {icon: 2, time: 2000});
+                        num++;
+                    }
+                }
+                if (num > 0) {
+                    return false;
+                }
+                /* 验证表单中的数据是否满足正则表达式 */
+                for (var i in arr) {
+                    if (!arr[i].test($("#" + arr4[i] + "").val())) {
+                        $("#" + arr4[i] + "").css("border", "1px solid #f00");
+                        layer.msg(arr2[i], {icon: 2, time: 2000});
+                        num++;
+                        return false;
+                    }
+                }
+
+                if (num > 0) {
+                    return false;
+                } else {
+                    layer.alert('添加成功！', {
+                        title: '提示框',
+                        icon: 1, time: 2000,
+                    });
+                    $.ajax({
+                        url: '/warehouse/addware',
+                        type: 'post',
+                        contentType: "application/json",
+                        data: JSON.stringify(data),
+                        success: function (d) {
+                            layer.close(index);
+                            window.parent.document.getElementById('iframe').contentWindow.location.reload(true);
+                        }
+                    })
+                }
+            }
+        });
+
+    });
+
+
+    /* 修改点击事件 */
+    function wareName1() {
+        if (test1.test($("#ware_name1").val())) {
+            return true;
+        } else {
+            layer.msg("仓库名称由汉字，数字，字母组成", {icon: 2, time: 2000});
+        }
+    }
+
+    function person1() {
+        if (test2.test($("#person1").val())) {
+            return true;
+        } else {
+            layer.msg("负责人只能输入汉字", {icon: 2, time: 2000});
+        }
+    }
+
+    function telephone1() {
+        if (test3.test($("#telephone1").val())) {
+            return true;
+        } else {
+            layer.msg("电话号码格式不正确", {icon: 2, time: 2000});
+        }
+    }
+
+    function cargoNum1() {
+        if (test4.test($("#cargo_num1").val()) && !$("#cargo_num1").val() == "") {
+            return true;
+        } else {
+            layer.msg("货区数目只能由数字组成", {icon: 2, time: 2000});
+        }
+    }
+
+    /*区域分配-编辑*/
+    function update(eq) {
+        /* 验证编号是否重复 */
+        wareNonum = [];
+        $("#sample-table tr").each(function (n) {
+            wareNonum.push($(this).children("td:eq(1)").text());
+        });
+        console.log(wareNonum);
+
+        var AAA = $(eq).parent().parent().children("td:eq(1)").text();//没修改之前的仓库编号
+        $("#ware_no1").val($(eq).parent().parent().children("td:eq(1)").text());//仓库编号
+        $("#ware_name1").val($(eq).parent().parent().children("td:eq(2)").text());//仓库名称
+        $("#person1").val($(eq).parent().parent().children("td:eq(3)").text());//负责人
+        $("#telephone1").val($(eq).parent().parent().children("td:eq(4)").text());//联系电话
+        $("#cargo_num1").val($(eq).parent().parent().children("td:eq(5)").text());//货区数目
+        $("#address1").val($(eq).parent().parent().children("td:eq(6)").text());//详细地址
+        $("#details1").val($(eq).parent().parent().children("td:eq(8)").text());//仓库描述
+        $("#dete_time1").text($(eq).parent().parent().children("td:eq(9)").text());//创建时间
+        $("#status").text($(eq).parent().parent().children("td:eq(10)").text());//状态
+        layer.open({
+            type: 1,
+            title: '编缉仓库',
+            maxmin: true,
+            shadeClose: false, //点击遮罩关闭层
+            area: ['600px', ''],
+            content: $('#edit_menber_style'),
+            btn: ['保存', '取消'],
+            yes: function (index, layero) {
+                /!*  获取编辑框的内容 *!/
+                var data = {};  //定义一个JQ对象
+                data.id = $(eq).parent().parent().children("td:eq(12)").text();//仓库id
+                data.wareNo = $("#ware_no1").val();
+                data.wareName = $("#ware_name1").val();
+                data.person = $("#person1").val();
+                data.telephone = $("#telephone1").val();
+                data.cargoNum = $("#cargo_num1").val();
+                data.address = $("#address1").val();
+                data.deteTime = $("#date_time1").val()
+                data.details = $("#details1").val();
+                console.log(data);
+                var num = 0;
+                var str = "";
+                /* 验证是否为空 */
+                $(".edit_menber input[type$='text']").each(function (n) {
+                    if ($(this).val() == "") {
+                        layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                            title: '提示框',
+                            icon: 0,
+                        });
+                        num++;
+                        return false;
+                    }
+                });
+                if (num > 0) {
+                    return false;
+                }
+                /* 验证编号是否存在 */
+                if ($("#ware_no1").val() != AAA) {
+                    for (var j in wareNonum) {
+                        if (wareNonum[j] == $("#ware_no1").val()) {
+                            layer.msg("编号已经存在", {icon: 2, time: 2000});
+                            num++;
+                        }
+                    }
+                }
+                if (num > 0) {
+                    return false;
+                }
+
+                /* 验证表单其他内容 */
+                for (var i in arr) {
+                    if (!arr[i].test($("#" + arr5[i] + "").val())) {
+                        $("#" + arr5[i] + "").css("border", "1px solid #f00");
+                        layer.msg(arr2[i], {icon: 2, time: 2000});
+                        num++;
+                        return false;
+                    }
+                }
+                if (num > 0) {
+                    return false;
+                } else {
+                    layer.alert('修改成功！', {
+                        title: '提示框',
+                        icon: 1,
+                    });
+                    $.ajax({
+                        url: '/warehouse/updateware',
+                        type: 'post',
+                        contentType: "application/json",
+                        data: JSON.stringify(data),
+                        success: function (d) {
+                            layer.close(index);
+                            window.parent.document.getElementById('iframe').contentWindow.location.reload(true);
+                        }
+                    })
+                }
+            }
+        });
+    }
+
+    /*地图区域分配-添加*/
+    $('#area').on('click', function () {
+        layer.open({
+            type: 1,
+            title: '选择详细地理位置',
+            maxmin: true,
+            shadeClose: false, //点击遮罩关闭层
+            area: ['800px', '700px'],
+            content: $('#homerr'),
+            btn: ['保存', '取消'],
+            yes: function (index, layero) {
+                $("#place").val($("#result_").val());
+                var num = 0;
+                var str = "";
+                $(".tab-pane input[type$='text']").each(function (n) {
+                    if ($(this).val() == "") {
+                        layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                            title: '提示框',
+                            icon: 0,
+                        });
+                        num++;
+                        return false;
+                    }
+                });
+                if (num > 0) {
+                    return false;
+                } else {
+                    layer.alert('定位成功！', {
+                        title: '提示框',
+                        icon: 1,
+                    });
+                    layer.close(index);
+                }
+            }
+        });
+    });
+
+    /* 分页列表  模糊查询 */
+    $(function () {
+        $.ajax({
+            url: '[[@{/warehouse/findallware}]]',
+            success: function (d) {
+                if (d.rs) {
+                    var data = d.data;
+                    console.log(data);
+                    for (var i in data) {
+                        $('#select:last').append("<option value=" + data[i].wareName + ">" + data[i].wareName + "</option>")
+                    }
+                } else {
+                    layer.msg("仓库列表加载失败", {icon: 2, time: 2000});
+                }
+
+            }
+        })
+
+        var table = $('#sample-table').dataTable({
+            "autoWidth": false,
+            searching: false,
+            serverSide: true,
+            ajax: {
+                url: '/warehouse/ware',
+                type: 'post',
+                data: function (d) {
+                    var data = $('form').serialize();
+                    var searchParame = {
+                        start: d.start,
+                        length: d.length,
+                    };
+                    data = data + '&' + $.param(searchParame);
+                    return data;
+                }
+            },
+            columns: [
+
+                {
+                    "data": "id", "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).text(row + 1);
+                    }
+                },
+                {"data": "wareNo"},
+                {"data": "wareName"},
+                {"data": "person"},
+                {"data": "telephone"},
+                {"data": "cargoNum"},
+                {"data": "address", "className": "hidden", 'sDefaultContent': ''},
+                {"data": "place", "className": "hidden"},
+                {"data": "details", 'sDefaultContent': ''},
+                {"data": "deteTime"},
+                {
+                    "data": "status",
+                    "className": "td-status",
+                    "createdCell": function (td, cellData, rowData, row, col) {
+                        if (cellData == '0') {
+                            $(td).empty().append('<span class="label label-success radius">正常</span>')
+                        }
+                        if (cellData == '1') {
+                            $(td).empty().append('<span class="label label-defaunt radius">正常</span>');
+                        }
+
+                    }
+                },
+                {
+                    "data": "status",
+                    "className": "td-manage",
+                    "createdCell": function (td, cellData, rowData, row, col) {
+                        if (cellData == '0') {
+                            $(td).empty().append(
+                                '<a title="编辑" id="aa" onclick="update(this)" class="btn btn-xs btn-success  property_edit" ><i class="icon-edit bigger-120"></i></a>');
+                        }
+                        if (cellData == '1') {
+                            $(td).empty().append(
+                                '<a title="编辑" id="aa" onclick="update(this)" class="btn btn-xs btn-defaunt  property_edit" ><i class="icon-edit bigger-120"></i></a>');
+                        }
+                    }
+                },
+                {"data": "id", "className": "hidden"},
+            ]
+        })
+        //模糊查询按钮事件
+        $('#btn_search').click(function () {
+            table.fnUpdate();
+        })
+
+        $('table th input:checkbox').on('click', function () {
+            var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+                .each(function () {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+
+        });
+
+
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            var w2 = $source.width();
+
+            if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2)) return 'right';
+            return 'left';
+        }
+    });
+
+    /*仓库-创建*/
+    function member_add(title, url, id, w, h) {
+        layer_show(title, url + '#?=' + id, w, h);
+    }
+
+    /*仓库-查看*/
+    function member_show(title, url, id, w, h) {
+        layer_show(title, url + '#?=' + id, w, h);
+    }
+
+    /*仓库-停用*/
+    function member_stop(obj, id) {
+        var aa = $(obj).parent().parent().children("td:eq(12)").text();
+        layer.confirm('确认要停用吗？', function (index) {
+
+            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" class="btn btn-xs " onClick="member_start(this,id)" href="javascript:;" title="启用"><i class="icon-ok bigger-120"></i></a>');
+            $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已停用</span>');
+            $(obj).remove();
+            var data = {};  //定义一个JQ对象
+            data.id = aa;
+            $.ajax({
+                url: '/warehouse/updatewarestatus1',
+                type: 'post',
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (d) {
+                    layer.msg('已停用!', {icon: 5, time: 1000});
+                }
+            })
+
+        });
+    }
+
+    /*仓库-启用*/
+    function member_start(obj, id) {
+        var aa = $(obj).parent().parent().children("td:eq(12)").text();
+        console.log(aa);
+        layer.confirm('确认要启用吗？', function (index) {
+            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" class="btn btn-xs btn-success" onClick="member_stop(this,id)" href="javascript:;" title="停用"><i class="icon-ok bigger-120"></i></a>');
+            $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+            $(obj).remove();
+
+            var data = {};  //定义一个JQ对象
+            data.id = aa;
+            $.ajax({
+                url: '/warehouse/updatewarestatus0',
+                type: 'post',
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (d) {
+                    layer.msg('已启用!', {icon: 6, time: 1000});
+                }
+            })
+
+        });
+    }
+
+    /*仓库-删除*/
+    function member_del(obj, id) {
+        layer.confirm('确认要删除吗？', function (index) {
+            $(obj).parents("tr").remove();
+            layer.msg('已删除!', {icon: 1, time: 1000});
+        });
+    }
+
+    laydate.render({
+        elem: '#start',
+        type: 'datetime'
+    });
+
+</script>
+
+</body>
+</html>

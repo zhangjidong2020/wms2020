@@ -1,0 +1,144 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link th:href="@{/erp/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/erp/css/style.css}"/>
+    <link th:href="@{/erp/assets/css/codemirror.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/font/css/font-awesome.min.css}"/>
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace-ie.min.css}"/>
+    <![endif]-->
+    <script th:src="@{/erp/js/jquery-1.9.1.min.js}"></script>
+    <script th:src="@{/erp/assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{/erp/assets/js/typeahead-bs2.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.bootstrap.js}"></script>
+    <script th:src="@{/erp/assets/layer/layer.js}" type="text/javascript"></script>
+    <script th:src="@{/erp/assets/laydate/laydate.js}" type="text/javascript"></script>
+    <title>合作关系申请</title>
+</head>
+
+<body>
+<div class="margin clearfix">
+    <div class="" id="Other_Management">
+        <div class="search_style">
+            <form>
+                <ul class="search_content clearfix">
+                    <li><label class="l_f">设置时间:<input class="inline laydate-icon" name="startTime" id="start1"
+                                                       style=" margin-left:10px;width:300px">
+                        &nbsp;&nbsp;至&nbsp;&nbsp;<input class="inline laydate-icon" name="endTime" id="start2"
+                                                        style="margin-left:10px;width:300px">
+                    </label>
+                    </li>
+                    <li style="width:100px;">
+                        <button type="button" id="select" class="btn_search"><i class="fa fa-search"></i>查询</button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <div class="Store_Introduction">
+            <div class="list_style">
+                <table class="table table-striped table-bordered table-hover" id="sample-table">
+                    <thead>
+                    <tr>
+                        <th width="20">序号</th>
+                        <th width="80">名称</th>
+                        <th width="80">区域</th>
+                        <th width="120">主要经营</th>
+                        <th width="60">状态</th>
+                        <th width="70">申请时间</th>
+                        <th width="70">备注</th>
+                        <th width="80">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
+<script>
+    jQuery(function ($) {
+        var table = $('#sample-table').dataTable({
+            "autoWidth": false,//当重复刷新表格时，我的页面会出现变形的，现象，加了这个就好了
+            "serverSide": true,
+            serverSide: true,   //开始服务器分页
+            searching: false,  //关闭搜索框
+            aoColumnDefs: [
+                {"orderable": false, "aTargets": [0, 1, 2, 3, 4, 5, 6]}// 制定列不参与排序
+            ],
+            ajax: {
+                url: '/par/findInfoA',
+                type: 'post',
+                data: function (d) {
+                    var data = $('form').serialize();   //获取查询条件
+                    //获取分页信息
+                    var searchParams = {
+                        start: d.start,
+                        length: d.length,
+                    };
+                    data = data + '&' + $.param(searchParams);
+                    return data;
+                }
+            },
+            columns: [
+                {
+                    "data": "company.id", "createdCell": function (td, cellData, rowData, row) {
+                        console.log(rowData);
+                        $(td).empty().append(row + 1);
+                    }
+                },
+                {"data": "company.companyName"},
+                {
+                    "data": function (td) {
+                        return td.company.companyProvince + td.company.companyCity + td.company.companyArea;
+                    }
+                },
+                {"data": "company.businessScope"},
+                {
+                    "data": "tparStatus", "createdCell": function (td, cellData) {
+                        if (cellData == "已同意") {
+                            $(td).empty().append('<span class="label label-success radius">已同意</span>')
+                        } else if (cellData == "已拒绝") {
+                            $(td).empty().append('<span class="label label-danger radius">已拒绝</span>')
+                        } else $(td).empty().append('<span class="label label-warning radius">已申请</span>')
+                    }
+                },
+                {"data": "tparTime"},
+                {"data": "taprDesc"},
+                {
+                    "data": "tparRel", "createdCell": function (td, cellData, rowData) {
+                        $(td).empty().append('<a href="/par/selfRelation?companyId=' + rowData.company.id + '&companyRel=' + rowData.tparRel + '" title="查看" class="btn btn-xs btn-info "><i class="fa fa-list  bigger-120"></i></a>');
+                    }
+                }
+            ]
+        });
+
+        //搜索按钮事件
+        $('#select').click(function () {
+            table.fnUpdate();
+        });
+
+
+    });
+</script>
+<script type="text/javascript">
+    laydate.render({
+        elem: '#start1',
+        type: 'datetime'
+    });
+    laydate.render({
+        elem: '#start2',
+        type: 'datetime'
+    });
+</script>

@@ -1,0 +1,350 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link th:href="@{/erp/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/erp/css/style.css}"/>
+    <link th:href="@{/erp/assets/css/codemirror.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/font-awesome.min.css}"/>
+    <!--[if IE 7]>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/font-awesome-ie7.min.css}"/>
+    <![endif]-->
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="{/erp/assets/css/ace-ie.min.css}"/>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+    <script th:src="@{/erp/js/jquery-1.9.1.min.js}"></script>
+    <script th:src="@{/erp/assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{/erp/assets/js/typeahead-bs2.min.js}"></script>
+    <script th:src="@{/erp/assets/layer/layer.js}" type="text/javascript"></script>
+    <script th:src="@{/erp/assets/js/jquery-ui-1.10.3.custom.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.ui.touch-punch.min.js}"></script>
+    <script th:src="@{/erp/assets/js/ace-elements.min.js}"></script>
+    <script th:src="@{/erp/assets/js/ace.min.js}"></script>
+    <script th:src="@{/erp/assets/laydate/laydate.js}" type="text/javascript"></script>
+    <style type="text/css">
+        #preview {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000;
+            overflow: hidden;
+        }
+
+        #imghead {
+            filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);
+        }
+    </style>
+    <title>手动客户添加</title>
+
+</head>
+<body>
+<form id="addForm" method="post" action="/customer/addCustomer" onsubmit="return check()">
+    <div class="margin clearfix">
+        <div class="stystems_style">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active">
+                        <a data-toggle="tab" href="#newdropdown"><i
+                                class="green fa fa-home bigger-110"></i>&nbsp;添加客户</a></li>
+                    <li class="">
+                        <a data-toggle="tab" href="#homerr">&nbsp;地理位置</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+
+                    <div id="newdropdown" class="tab-pane active">
+                        <ul class=" page-content">
+                            <div class="Operate_cont clearfix" style="margin-left:200px">
+                                <label class="form-label"><span class="c-red">*</span>客户名称：</label>
+                                <div class="formControls " style="width:200px;">
+                                    <input type="text" class="input-text" value="" placeholder="" id="companyName"
+                                           name="companyName" required="required" onblur="companyNames()">
+                                </div>
+                                <div id="name">客户名仅支持中文、字母、数字、“-”“_”的组合，2-20个字符</div>
+                            </div>
+
+                            <div class="Operate_cont clearfix" style="margin-left:200px">
+                                <label class="form-label"><span class="c-red">*</span>联系人：</label>
+                                <div class="formControls ">
+                                    <input type="text" class="input-text" value="" placeholder="" id="legal"
+                                           name="legal" required="required" onblur="legals()">
+                                </div>
+                                <div id="legals">只能输入中文和字母</div>
+                            </div>
+                            <div class="Operate_cont clearfix" style="margin-left:200px">
+                                <label class="form-label"><span class="c-red">*</span>联系电话：</label>
+                                <div class="formControls ">
+                                    <input type="text" class="input-text" value="" placeholder="" id="legalTel"
+                                           name="legalTel" required="required" onblur="legalTels()">
+                                </div>
+                                <div id="mobile_prompt">由1开头的11位数</div>
+                            </div>
+                            <div class="Operate_cont clearfix" style="margin-left:200px">
+                                <label class="form-label"><span class="c-red"></span>固定电话：</label>
+                                <div class="formControls ">
+                                    <input type="text" class="input-text" value="" placeholder="" id="fixed_tel"
+                                           name="fixedTel" onblur="fixedTels()">
+                                </div>
+                                <div id="phone_prompt">区号-座机号</div>
+                            </div>
+                            <div class="Operate_cont clearfix" style="margin-left:200px">
+                                <label class="form-label"><span class="c-red"></span>邮箱：</label>
+                                <div class="formControls ">
+                                    <input type="text" class="input-text" value="" placeholder="" id="email"
+                                           name="companyEmail" onblur="emails()">
+                                </div>
+                                <div id="email_prompt">邮箱格式示例：web@163.com</div>
+                            </div>
+                            <div class="Operate_cont clearfix" style="margin-left:200px">
+                                <label class="form-label"><span class="c-red"></span>客户地址：</label>
+                                <div class="formControls ">
+                                    <input type="text" class="input-text" value="" placeholder="" id="address"
+                                           name="companyAddress" onblur="Address()">
+                                </div>
+                                <div>只能有汉字数字和字母,不能全为数字</div>
+                            </div>
+                            <div class="Operate_cont clearfix" style="margin-left:200px">
+                                <label class="form-label"><span class="c-red"></span>经纬度：</label>
+                                <div class="formControls ">
+                                    <input type="text" class="input-text" value="" placeholder="需地理位置确认"
+                                           style="border:0px" id="value1" name="longitudeLatitude">
+                                </div>
+                            </div>
+                            <div class="Operate_cont clearfix" id="test2" style="margin-left:200px">
+                                <label class="form-label"><span class="c-red"></span>备注：</label>
+                                <div class="formControls " style="width:300px">
+                                    <input type="text" class="input-text" value="" placeholder="" id="remark"
+                                           name="rRemark">
+                                </div>
+                                <div id="remarkk">不超过100字</div>
+                            </div>
+                            <div class="Operate_cont clearfix" style="margin-left:200px">
+                                <label class="form-label">客户简介：</label>
+                                <div class="formControls">
+                <textarea name="rSyno" rows="" class="textarea" placeholder="说点什么...最少输入10个字符" datatype="*10-100"
+                          oninput="text_length(this)" th:maxlength="100" dragonfly="true" nullmsg="备注不能为空！"></textarea>
+                                    <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+                                </div>
+                            </div>
+                        </ul>
+
+                        <div class="Button_operation">
+
+                            <button onclick="tiaoz()" class="btn btn-primary " type="submit">
+                                &nbsp;&nbsp;保存&nbsp;&nbsp;
+                            </button>
+                            <button onclick="tiaozzz()" class="btn btn-default radius" type="button">&nbsp;&nbsp;返回&nbsp;&nbsp;</button>
+
+                        </div>
+                    </div>
+
+
+                    <div id="homerr" class="tab-pane">
+                        <div style="width:730px;margin:auto;">
+                            <label style="width:260px"> 输入地址：<input id="text_" type="text" value="中国"/></label>
+                            <input type="button" value="查询" class="btn btn-xs btn-info"
+                                   onClick="searchByStationName();"/>
+                            <label style="margin-left:50px;width:260px">经纬度：<input id="result_" type="text"/></label>
+                            <input type="button" value="确定使用" class="btn btn-xs btn-danger " onClick="setting();"/>
+                            <div id="container"
+                                 style="position: absolute;
+                margin-top:30px; 
+                width: 730px; 
+                height: 590px; 
+                top: 50px;
+                border: 1px solid gray;
+                overflow:hidden;">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+
+
+<script type="text/javascript">
+    function text_length(obj) {
+        $(obj).next("p").find(".textarea-length").text($(obj).val().length)
+    }
+
+
+    function go() {
+        location.href = "my_clientele.html";
+    }
+
+    function setting() {
+        layer.confirm('确认要使用吗？', function (index) {
+            layer.msg('已使用!', {icon: 1, time: 1000});
+        });
+        var valu = document.getElementById("result_").value;
+        document.getElementById("value1").value = valu;
+        //document.getElementById("value2").value = valu;
+
+    }
+
+
+    var map = new BMap.Map("container");
+    map.centerAndZoom("宁波", 12);
+    map.enableScrollWheelZoom(true);    //启用滚轮放大缩小，默认禁用
+    map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+
+
+    map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
+    map.addControl(new BMap.OverviewMapControl()); //添加默认缩略地图控件
+    map.addControl(new BMap.OverviewMapControl({isOpen: true, anchor: BMAP_ANCHOR_BOTTOM_RIGHT}));   //右下角，打开
+
+    map.addEventListener("click", function (e) {   //单击地图，形成折线覆盖物
+
+        document.getElementById("result_").value = e.point.lng + "," + e.point.lat;
+
+    });
+
+    var localSearch = new BMap.LocalSearch(map);
+    localSearch.enableAutoViewport(); //允许自动调节窗体大小
+    function searchByStationName() {
+        map.clearOverlays();//清空原来的标注
+        var keyword = document.getElementById("text_").value;
+        localSearch.setSearchCompleteCallback(function (searchResult) {
+            var poi = searchResult.getPoi(0);
+            document.getElementById("result_").value = poi.point.lng + "," + poi.point.lat;
+            map.centerAndZoom(poi.point, 13);
+            var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));  // 创建标注，为要查询的地方对应的经纬度
+            map.addOverlay(marker);
+            var content = document.getElementById("text_").value + "<br/><br/>经度：" + poi.point.lng + "<br/>纬度：" + poi.point.lat;
+            var infoWindow = new BMap.InfoWindow("<p style='font-size:14px;'>" + content + "</p>");
+            marker.addEventListener("click", function () {
+                this.openInfoWindow(infoWindow);
+            });
+            // marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        });
+        localSearch.search(keyword);
+    }
+
+</script>
+</html>
+<script type="text/javascript">
+    function check() {
+        return companyNames() && legals() && fixedTels() && legalTels() && emails() && Address();
+    }
+
+    function companyNames() {
+        var pName = $('#companyName').val();
+        var reg = /^[\u2E80-\u9FFF\w-]{2,20}$/
+        if (reg.test(pName)) {
+            $('#pName').attr('style', 'border:1px solid #ccc');
+            return true;
+        } else {
+            $('#pName').attr('style', 'border:1px solid red');
+            layer.msg("客户名称格式不正确", {icon: 2, time: 1000});
+            return false;
+        }
+    }
+
+    function legals() {
+        var reg = /^[a-zA-Z\u4e00-\u9fa5]+$/
+        var pName = $('#legal').val();
+        if (reg.test(pName)) {
+            $('#pName').attr('style', 'border:1px solid #ccc');
+            return true;
+        } else {
+            $('#pName').attr('style', 'border:1px solid red');
+            layer.msg("联系人格式不正确", {icon: 2, time: 1000});
+            return false;
+        }
+    }
+
+    function fixedTels() {
+        //固话验证
+        var legalTel = document.getElementById("fixed_tel").value;
+        var reg1 = /^\d{3,4}[-]\d{7,8}$/;
+        if (reg1.test(legalTel)) {
+            $('#fixed_tel').attr('style', 'border:1px solid #ccc');
+            return true;
+        } else {
+            $('#fixed_tel').attr('style', 'border:1px solid red');
+            layer.msg("固话格式不正确", {icon: 2, time: 1000});
+            return false;
+        }
+    }
+
+    function legalTels() {
+        //电话验证
+        var legalTel = document.getElementById("legalTel").value;
+        var reg1 = /^1\d{10}$/;
+        if (reg1.test(legalTel)) {
+            $('#legalTel').attr('style', 'border:1px solid #ccc');
+            return true;
+        } else {
+            $('#legalTel').attr('style', 'border:1px solid red');
+            layer.msg("电话格式不正确", {icon: 2, time: 1000});
+            return false;
+        }
+    }
+
+    function emails() {
+        //邮箱验证
+        var email = document.getElementById("email").value;
+        var reg1 = /^[\w\d]{1,9}@[\w\d]{1,9}\.[\w]{2,3}$/;
+        if (reg1.test(email)) {
+            $('#email').attr('style', 'border:1px solid #ccc');
+            return true;
+        } else {
+            $('#email').attr('style', 'border:1px solid red');
+            layer.msg("邮箱格式不正确", {icon: 2, time: 1000});
+            return false;
+        }
+    }
+
+    function Address() {
+        //地址验证
+        var address = document.getElementById("address").value;
+        var reg1 = /^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]+$/;
+        if (reg1.test(address)) {
+            $('#address').attr('style', 'border:1px solid #ccc');
+            return true;
+        } else {
+            $('#address').attr('style', 'border:1px solid red');
+            layer.msg("地址格式不正确", {icon: 2, time: 1000});
+            return false;
+        }
+    }
+
+    function tiaozzz() {
+
+        window.location.href = "/customer/my_clientele_bak.html";
+
+    }
+
+    function tiaoz() {
+        layer.confirm('确认要保存吗？', function (index) {
+            /*    var data = $("#addForm").serialize();
+
+                $.ajax({
+                    type:'post',
+                    datatype:'json',
+                    url:'/customer/addCustomer',
+                    data: data,
+                    success:function (data) {
+                        alert("添加成功");
+                    },
+                    error:function(){
+                        alert("请求失败")
+                    }
+                });*/
+
+
+            layer.msg('已保存!', {icon: 1, time: 1000});
+            window.location.href = "/customer/my_clientele_bak.html";
+
+        });
+    }
+</script>

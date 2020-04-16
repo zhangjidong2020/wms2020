@@ -1,0 +1,401 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="page-content clearfix">
+    <div class="administrator">
+        <div class="d_Confirm_Order_style">
+            <div class="search_style">
+                <ul class="search_content clearfix">
+                    <form action="/role/listRole" type="post" id="formfind">
+                        <li>
+                            <label class="l_f">角色名称</label>
+                            <input name="roleName" type="text" class="text_add" placeholder="" style="width:400px"/>
+                        </li>
+                        <li>
+                            <label class="l_f">添加时间</label>
+                            <input class="inline laydate-icon" style=" margin-left:10px;" name="datetime" id="start">
+                        </li>
+                        <li style="width:90px;">
+                            <button type="button" class="btn_search" id="sel"><i class="fa fa-search"></i>查询</button>
+                        </li>
+                    </form>
+                </ul>
+            </div>
+            <!--操作-->
+            <div class="border clearfix"> <span class="l_f">
+        <a href="addRolePage" id="Competence_add" class="btn btn-warning" title="添加角色"><i
+                class="fa fa-plus"></i> 添加角色</a>
+        <button type="button" class="btn btn-dange" id="btt"><i class="fa fa-search"></i>批量删除</button></span>
+            </div>
+            <div class="table_menu_list" id="testIframe">
+                <table class="table table-striped table-bordered table-hover" id="sample_table">
+                    <thead>
+                    <tr>
+                        <th width="25px"><label>
+                            <input type="checkbox" class="ace">
+                            <span class="lbl"></span></label></th>
+                        <th width="100px">序号</th>
+                        <th width="120px">角色编码</th>
+                        <th width="220px">角色名</th>
+                        <th width="150px">角色描述</th>
+                        <th width="100px">添加人</th>
+                        <th width="180px">加入时间</th>
+                        <th width="70px">状态</th>
+                        <th width="200px">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加管理员-->
+<div id="add_administrator_style" class="add_menber" style="display:none">
+    <form action="" id="form-admin-add">
+
+        <center>
+            <div id="roleuserbutton">
+                <input class="btn btn-primary radius" type="button" id="Add_Administrator"
+                       value="&nbsp;&nbsp;确定&nbsp;&nbsp;">
+            </div>
+        </center>
+    </form>
+</div>
+</div>
+</body>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link th:href="@{/erp/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/erp/css/style.css}"/>
+    <link th:href="@{/erp/assets/css/codemirror.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/font/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/font-awesome.min.css}"/>
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="assets/css/ace-ie.min.css"/>
+    <![endif]-->
+    <script th:src="@{/erp/js/jquery-1.9.1.min.js}"></script>
+    <script th:src="@{/erp/assets/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/erp/Widget/Validform/5.3.2/Validform.min.js}"></script>
+    <script th:src="@{/erp/assets/js/typeahead-bs2.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.bootstrap.js}"></script>
+    <script th:src="@{/erp/assets/layer/layer.js}" type="text/javascript"></script>
+    <script th:src="@{/erp/js/lrtk.js}" type="text/javascript"></script>
+    <script th:src="@{/erp/assets/layer/layer.js}" type="text/javascript"></script>
+    <script th:src="@{/erp/assets/laydate/laydate.js}" type="text/javascript"></script>
+    <title>管理员</title>
+</head>
+</html>
+<script type="text/javascript">
+    $(function () {
+        var table = $('#sample_table').DataTable({
+
+            aaSorting: [
+                [1, "asc"]
+            ],//默认第几个排序
+            searching: false,  //取消本地搜索框
+            serverSide: true,   //开始服务器分页
+            bStateSave: true,//状态保存
+            aoColumnDefs: [
+                {"orderable": false, "aTargets": [0, 2, 3, 4, 5, 6, 7, 8]}// 制定列不参与排序
+            ],
+            ajax: {
+                url: '/role/listRole',
+                type: 'post',
+                data: function (d) {
+                    var data = $('#formfind').serialize();   //获取查询条件
+                    //获取分页信息
+                    var searchParams = {
+                        start: d.start / 10 + 1,
+                        length: d.length,
+                    };
+                    data = data + '&' + $.param(searchParams);
+                    return data;
+                }
+            },
+            columns: [
+                {
+                    "data": "companyId", "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).width('25px');
+                        $(td).empty().append('<label><input type="checkbox" class="ace" name="del"><span class="lbl"></span></label>');
+                    }
+                },
+                {
+                    "data": "id", "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).addClass('pat');
+                    }
+                },
+                {
+                    "data": "companyId", "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).empty().append(row + 1);
+                    }
+                },
+                {"data": "roleName"},
+                {"data": "roleDescribe"},
+                {"data": "roleCreateName"},
+                {"data": "roleCreateDate"},
+                {
+                    "data": "roleStatus", "createdCell": function (td, cellData, rowData, row, col) {
+                        if (cellData == "1") {
+                            $(td).addClass('td-status');
+                            $(td).empty().append('<span class="label label-success radius">已启用</span>');
+                        } else if (cellData == "0") {
+                            $(td).addClass('td-status');
+                            $(td).empty().append('<span class="label label-defaunt radius">已停用</span>');
+                        }
+                    }
+                },
+                {
+                    "data": "companyId", "createdCell": function (td, cellData, rowData, row, col) {
+                        if (rowData.roleStatus == "1") {
+                            $(td).addClass('td-manage');
+                            $(td).empty().append('<a onClick="member_stop(this,\'10001\')" href="javascript:;" title="停用" ' +
+                                'class="btn btn-xs btn-success"><i class="fa fa-check  bigger-120"></i></a>' +
+                                '<a title="编辑" href="/role/updateMenu?id=' + rowData.id + '" class="btn btn-xs btn-info"><i\n' +
+                                'class="fa fa-edit bigger-120"></i></a>\n' +
+                                '<a title="删除" href="javascript:;" onclick="member_del(this,\'1\')"\n' +
+                                'class="btn btn-xs btn-danger"><i class="fa fa-trash  bigger-120"></i></a>\n' +
+                                '<a title="分配员工" href="javascript:;" onclick="member_dis(this,\'1\')" id="administrator_add"\n' +
+                                'class="btn btn-xs btn-warning"><i class="fa icon-group  bigger-120"> </i> </a>');
+                        } else if (rowData.roleStatus == "0") {
+                            $(td).addClass('td-manage');
+                            $(td).empty().append('<a onClick="member_start(this,\'10001\')" href="javascript:;" title="启用" ' +
+                                'class="btn btn-xs "><i class="fa fa-close bigger-120"></i></a>' +
+                                '<a title="编辑" th:href="/role/updateMenu?id=' + rowData.id + '" class="btn btn-xs btn-info"><i\n' +
+                                'class="fa fa-edit bigger-120"></i></a>\n' +
+                                '<a title="删除" href="javascript:;" onclick="member_del(this,\'1\')"\n' +
+                                'class="btn btn-xs btn-danger"><i class="fa fa-trash  bigger-120"></i></a>\n' +
+                                '<a title="分配员工" href="javascript:;" onclick="member_dis(this,\'1\')" id="administrator_add"\n' +
+                                'class="btn btn-xs btn-warning"><i class="fa icon-group  bigger-120"> </i> </a>');
+                        }
+                    }
+                }
+            ]
+        });
+
+        $('table th input:checkbox').on('click', function () {
+            var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+                .each(function () {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+
+        });
+
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            var w2 = $source.width();
+
+            if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2)) return 'right';
+            return 'left';
+        }
+
+
+        /*产品-批量删除*/
+        $('#btt').click(function () {
+            var flag = 1;
+            $("input:checkbox[name='del']:checked").each(function () {
+                flag = $(this).attr("checked") == true ? 1 : 0;
+            });
+            if (flag == 1) {
+                layer.msg('请选择数据!', {icon: 2, time: 1000});
+            } else {
+                layer.confirm('确认要删除吗？', function (index) {
+                    var data = [];
+                    //遍历选中的行
+                    $("input:checkbox[name='del']:checked").each(function () {
+                        //向数组中添加选中行的id
+                        data.push($(this).parent().parent().next().text());
+                        $(this).parents("tr").remove();
+                    });
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        url: 'deleteMany',
+                        data: {ids: data}
+                    })
+                    layer.msg('已删除!', {icon: 1, time: 1000});
+                    table.ajax.reload();
+                });
+            }
+        })
+
+        //搜索按钮事件
+        $('#sel').click(function () {
+            table.ajax.reload();
+        })
+    })
+
+    /*产品-删除*/
+    function member_del(obj, id) {
+        layer.confirm('确认要删除吗？', function (index) {
+            var data = {
+                'roleid': $(obj).parents("tr").find(".pat").text()
+            };
+            console.log(JSON.stringify(data));
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                url: 'delete',
+                data: JSON.stringify(data)
+            })
+            $(obj).parents("tr").remove();
+            layer.msg('已删除!', {icon: 1, time: 1000});
+            window.location.href = "/role/roleManage";
+        });
+    }
+
+    /*用户-停用*/
+    function member_stop(obj, id) {
+        layer.confirm('确认要停用吗？', function (index) {
+            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" class="btn btn-xs " onClick="member_start(this,id)" href="javascript:;" title="启用"><i class="fa fa-close bigger-120"></i></a>');
+            $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已停用</span>');
+            var data = {
+                'roleid': $(obj).parents("tr").find(".pat").text(),
+                'status': "0"
+            };
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                url: 'updateStatus',
+                data: JSON.stringify(data)
+            })
+            $(obj).remove();
+            layer.msg('已停用!', {icon: 5, time: 1000});
+        });
+    }
+
+    /*用户-启用*/
+    function member_start(obj, id) {
+        layer.confirm('确认要启用吗？', function (index) {
+            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" class="btn btn-xs btn-success" onClick="member_stop(this,id)" href="javascript:;" title="停用"><i class="fa fa-check  bigger-120"></i></a>');
+            $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+            var data = {
+                'roleid': $(obj).parents("tr").find(".pat").text(),
+                'status': "1"
+            };
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                url: 'updateStatus',
+                data: JSON.stringify(data)
+            })
+            $(obj).remove();
+            layer.msg('已启用!', {icon: 6, time: 1000});
+        });
+    }
+
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("#administrator").fix({
+            float: 'left',
+            //minStatue : true,
+            skin: 'green',
+            durationTime: false,
+            spacingw: 50,//设置隐藏时的距离
+            spacingh: 270,//设置显示时间距
+        });
+    });
+
+    //字数限制
+    function checkLength(which) {
+        var maxChars = 100; //
+        if (which.value.length > maxChars) {
+            layer.open({
+                icon: 2,
+                title: '提示框',
+                content: '您输入的字数超过限制!',
+            });
+            // 超过限制的字数了就将 文本框中的内容按规定的字数 截取
+            which.value = which.value.substring(0, maxChars);
+            return false;
+        } else {
+            var curr = maxChars - which.value.length; //250 减去 当前输入的
+            document.getElementById("sy").innerHTML = curr.toString();
+            return true;
+        }
+    };
+    //初始化宽度、高度
+    $(".widget-box").height($(window).height() - 215);
+    $(".table_menu_list").width($(window).width() - 260);
+    $(".table_menu_list").height($(window).height() - 215);
+    //当文档窗口发生改变时 触发
+    $(window).resize(function () {
+        $(".widget-box").height($(window).height() - 215);
+        $(".table_menu_list").width($(window).width() - 260);
+        $(".table_menu_list").height($(window).height() - 215);
+    })
+    laydate.render({
+        elem: '#start',
+        type: 'datetime'
+    });
+
+    function member_dis(obj, id) {
+        /*添加管理员on(*/
+        var diii = [];
+        diii.push($(obj).parent().parent().children('td:eq(1)').text());
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: 'getStaff',
+            data: {dd: diii},
+            success: function (d) {
+                if (d.rs) {
+                    var aa = d.data;
+                    $('.form-group').remove();
+                    for (var a in aa) {
+                        if (aa[a].userOpt == true) {
+                            $('#roleuserbutton').before('<div class="form-group"><label class="middle"><input type="checkbox" class="ace" checked="checked" value="' + aa[a].id + '" name="user-Character-0-0-0"><span class="lbl">' + aa[a].userName + '</span></label></div>');
+                        } else {
+                            $('#roleuserbutton').before('<div class="form-group"><label class="middle"><input type="checkbox" class="ace" value="' + aa[a].id + '" name="user-Character-0-0-0"><span class="lbl">' + aa[a].userName + '</span></label></div>');
+                        }
+                    }
+                } else {
+                    layer.msg(d.msg, {icon: 2, time: 2000});
+                }
+
+            }
+        });
+        var data = [];
+        data.push($(obj).parent().parent().find('.pat').text());
+        layer.open({
+            type: 1,
+            title: '设置员工',
+            area: ['400px', ''],
+            shadeClose: false,
+            content: $('#add_administrator_style')
+        });
+        $('#Add_Administrator').click(function () {
+            $("input:checkbox[name='user-Character-0-0-0']:checked").each(function () {
+                data.push($(this).val());
+            });
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: 'addUserRole',
+                data: {ids: data}
+            })
+            window.location.href = "/role/roleManageaa";
+        })
+    }
+
+
+</script>

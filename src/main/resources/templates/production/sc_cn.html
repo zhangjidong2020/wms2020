@@ -1,0 +1,396 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Cache-Control" content="no-siteapp"/>
+<link th:href="@{/erp/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+<link rel="stylesheet" th:href="@{/erp/css/style.css}"/>
+<link th:href="@{/erp/assets/css/codemirror.css}" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/erp/assets/css/ace.min.css}"/>
+<link rel="stylesheet" th:href="@{/erp/assets/css/font-awesome.min.css}"/>
+<link th:href="@{/erp/Widget/icheck/icheck.css}" rel="stylesheet" type="text/css"/>
+<!--[if IE 7]>
+<link rel="stylesheet" th:href="@{/erp/assets/css/font-awesome-ie7.min.css}"/>
+<![endif]-->
+<!--[if lte IE 8]>
+<link rel="stylesheet" th:href="@{/erp/assets/css/ace-ie.min.css}"/>
+<![endif]-->
+<script th:src="@{/erp/js/jquery-1.9.1.min.js}"></script>
+<script th:src="@{/erp/assets/js/bootstrap.min.js}"></script>
+<script th:src="@{/erp/assets/js/typeahead-bs2.min.js}"></script>
+<script th:src="@{/erp/assets/layer/layer.js}" type="text/javascript"></script>
+<script th:src="@{/erp/assets/js/jquery-ui-1.10.3.custom.min.js}"></script>
+<script th:src="@{/erp/assets/js/jquery.ui.touch-punch.min.js}"></script>
+<script th:src="@{/erp/assets/js/ace-elements.min.js}"></script>
+<script th:src="@{/erp/assets/js/ace.min.js}"></script>
+<title>产能管理</title>
+
+</head>
+
+<body>
+
+<div class="margin clearfix">
+    <div class="stystems_style">
+        <div class="tabbable">
+            <div class="page-content clearfix">
+                <div id="Member_Ratings">
+                    <div class="tab-content">
+
+                        <div id="home" class="tab-pane active">
+                            <div class="border clearfix">
+        <span class="l_f">
+        <a href="javascript:" onclick="add(this)" id="member_add" class="btn btn-warning"><i class="icon-plus"></i>添加产线</a>
+		</span>
+                            </div>
+
+                            <table class="table table-striped table-bordered table-hover" id="sample-table">
+                                <thead>
+                                <tr>
+                                    <th width="100">生产线编号</th>
+                                    <th width="150">名称</th>
+                                    <th width="150">生产能力</span></th>
+                                    <th width="100">负责人</th>
+                                    <th width="100">产线人数</th>
+                                    <th width="100">生产状态</th>
+                                    <th width="120">备注</th>
+                                    <th width="200">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr th:each="productionLine : ${productionLines}">
+                                    <td th:text="${productionLine.id}"></td>
+                                    <td th:text="${productionLine.productionName}" class="exc"></td>
+                                    <td><span id="day"
+                                              th:text="${productionLine.productionCapacity}"></span><span>(组/天)</span>
+                                    </td>
+                                    <td th:text="${productionLine.principal}"></td>
+                                    <td th:text="${productionLine.num}"></td>
+                                    <td style="color: red" th:if="${productionLine.state}=='1'">生产中</td>
+                                    <td style="color: red" th:if="${productionLine.state}=='0'">未生产</td>
+                                    <td th:text="${productionLine.remark}"></td>
+                                    <td class="td-manage">
+                                        <a title="编辑" onclick="member_edit(this)" href="javascript:;"
+                                           class="btn btn-xs btn-info"><i onclick="update(this)"
+                                                                          class="icon-edit bigger-120"></i></a>
+                                        <a title="删除" href="javascript:;" onclick="member_del(this,'1')"
+                                           class="btn btn-xs btn-warning" id="del"><i
+                                                class="icon-trash  bigger-120"></i></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--添加产线图层-->
+                    <div class="add_menber" id="add_menber_style" style="display:none">
+
+                        <ul class=" page-content">
+
+                            <div class="prompt r_f"></div>
+                            <li><label class="label_name">产线名称：</label><span class="add_name">
+         <input name="产线名称" type="text" class="text_add" id="productionName"
+                onkeyup="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')"
+                onafterpaste="this.value=this.value.replace(//[^\w\u4E00-\u9FA5]/g,'')" maxlength="9"/>
+     </span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                            <li><label class="label_name">生产能力：</label><span class="add_name"><input name="生产能力"
+                                                                                                     placeholder="请输入数字"
+                                                                                                     type="text"
+                                                                                                     class="text_add"
+                                                                                                     id="productionCapacity"
+                                                                                                     maxlength="9"
+                                                                                                     onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
+                                                                                                     onafterpaste="this.value=this.value.replace(/[^\d]/g,'')"/>&nbsp;组/天</span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                            <li><label class="label_name">负&nbsp;&nbsp;责&nbsp;&nbsp;人：</label><span
+                                    class="add_name"><input value="" name="负责人" type="text" class="text_add"
+                                                            id="principal"
+                                                            onkeyup="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')"
+                                                            onafterpaste="this.value=this.value.replace(//[^\w\u4E00-\u9FA5]/g,'')"
+                                                            maxlength="9"/></span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                            <li style="padding-right: 100px;"><label class="label_name">产线人数：</label><span
+                                    class="add_name"><input value="" placeholder="请输入数字" name="产线人数" type="text"
+                                                            class="text_add" id="num" maxlength="9"
+                                                            onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
+                                                            onafterpaste="this.value=this.value.replace(/[^\d]/g,'')"/></span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                            <li><label class="label_name">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态：</label><span
+                                    class="add_name">
+                                 <label><input name="form-field-radio1" type="radio" class="ace" value="1"><span
+                                         class="lbl">生产中</span></label>&nbsp;&nbsp;&nbsp;
+                                 <label><input name="form-field-radio1" type="radio" checked="checked" class="ace"
+                                               value="0"><span class="lbl">未生产</span></label></span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                            <li class="adderss"><label class="label_name" style="width:84px">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</label><span
+                                    class="add_name"><input name="备注" type="textarea" class="text_add" id="remark"
+                                                            style=" width:350px"/></span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--编辑产线图层-->
+                    <div class="add_menber2" id="add_menber_styl" style="display:none">
+                        <ul class=" page-content">
+                            <div class="prompt r_f"></div>
+                            <input id="id2" name="id" type="text" class="text_add" hidden="hidden"/>
+                            <li style="padding-bottom:8px ; padding-top: 12px"><label class="label_name">产线名称：</label>
+                                <span class="add_name"><input id="productionName2" name="产线名称" type="text"
+                                                              class="text_add"/></span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                            <li style="padding-bottom:8px "><label class="label_name">生产能力：</label><span
+                                    class="add_name"><input id="productionCapacity2" name="生产能力" type="text"
+                                                            class="text_add" maxlength="9"
+                                                            onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
+                                                            onafterpaste="this.value=this.value.replace(/[^\d]/g,'')"/>&nbsp;组/天</span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                            <li style="padding-bottom:8px "><label
+                                    class="label_name">负&nbsp;&nbsp;责&nbsp;&nbsp;人：</label><span class="add_name"><input
+                                    id="principal2" name="负责人" type="text" class="text_add"/></span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                            <li style="padding-bottom:8px "><label class="label_name">产线人数：</label><span
+                                    class="add_name"><input id="num2" name="产线人数" type="text" class="text_add"
+                                                            maxlength="9"
+                                                            onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
+                                                            onafterpaste="this.value=this.value.replace(/[^\d]/g,'')"/></span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                            <li></li>
+                            <li style="padding-bottom:8px "><label class="label_name">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态：</label><span
+                                    class="add_name">
+                            <label><input name="form-field-radio2" type="radio" class="ace" value="1"><span class="lbl">生产中</span></label>&nbsp;&nbsp;
+                            <label><input name="form-field-radio2" type="radio" class="ace" value="0"><span class="lbl">未生产</span></label></span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                            <li class="adderss" style="padding-bottom:8px "><label class="label_name"
+                                                                                   style="width:84px">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</label>
+                                <span class="add_name"><input name="备注" type="textarea" class="text_add"
+                                                              style=" width:350px" id="remark2"/></span>
+                                <div class="prompt r_f"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:inline="none">
+
+    //判断生产线是否存在
+    var boo = false;
+    var lines = [];
+
+    /* 添加 查询生产线集 */
+    function add(eq) {
+        /* 验证生产线是否重复 */
+        $(".exc").each(function (n) {
+            lines.push($(this).text());
+        });
+        console.log(lines);
+    }
+
+    //判断编辑时生产线是否存在
+    var boo2 = false;
+
+    /* 编辑时 查询生产线集 */
+    function update(eq) {
+        /* 验证生产线是否重复 */
+        $(".exc").each(function (n) {
+
+            lines.push($(this).text());
+        });
+        console.log(lines);
+    }
+
+    var updateLine;
+    /*产线-添加*/
+    $('#member_add').on('click', function () {
+        layer.open({
+            type: 1,
+            title: '添加产线',
+            maxmin: true,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['800px', ''],
+            content: $('#add_menber_style'),
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+                var num = 0;
+                var str = "";
+                $(".add_menber input[type$='text']").each(function (n) {
+                    if ($(this).val() == "") {
+                        layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                            title: '提示框',
+                            icon: 0,
+                        });
+                        num++;
+                        return false;
+                    }
+
+                });
+                if (num > 0) {
+                    return false;
+                } else {
+                    var data = {
+                        'productionName': $("#productionName").val(),
+                        'productionCapacity': $("#productionCapacity").val(),
+                        'principal': $("#principal").val(),
+                        'num': $("#num").val(),
+                        'state': $("input[name='form-field-radio1']:checked").val(),
+                        'remark': $("#remark").val()
+                    };
+                    console.log(JSON.stringify(data));
+
+                    for (var cNo in lines) {
+                        $("#productionName").css("border", "1px solid #f00");
+                        if (lines[cNo] == $("#productionName").val()) {
+                            layer.msg("生产线名称已存在", {icon: 2, time: 5000});
+                            return false;
+                        }
+                    }
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        async: false,//同步或异步
+                        contentType: 'application/json',
+                        url: '/productionLine/addProductionLine',
+                        data: JSON.stringify(data),
+                        success: function (d) {
+                        }
+                    })
+                    layer.alert('添加成功！', {
+                        title: '提示框',
+                        icon: 1,
+                    });
+                    window.parent.document.getElementById('iframe').contentWindow.location.reload(true);
+                    layer.close(index);
+                }
+            }
+        });
+    });
+
+    /*产线-查看*/
+    function member_show(title, url, id, w, h) {
+        layer_show(title, url + '#?=' + id, w, h);
+    }
+
+    /*产线-编辑*/
+    function member_edit(e) {
+        update();
+        document.getElementById('id2').value = $(e).parent().parent().children("td:eq(0)").text();
+        document.getElementById('productionName2').value = $(e).parent().parent().children("td:eq(1)").text();
+        updateLine = $("#productionName2").val();
+        document.getElementById('productionCapacity2').value = $(e).parent().parent().children("td:eq(2)").children('#day').text();
+        document.getElementById('principal2').value = $(e).parent().parent().children("td:eq(3)").text();
+        document.getElementById('num2').value = $(e).parent().parent().children("td:eq(4)").text();
+
+        var state3 = $(e).parent().parent().children("td:eq(5)").text();
+
+        console.log("state3" + state3)
+
+        if (state3 == "未生产") {
+            $("input:radio[value='0']").attr('checked', 'true');
+        } else {
+            //勾选已生产
+            $("input:radio[value='1']").attr('checked', 'true');
+        }
+        console.log(document.getElementsByName('form-field-radio2').value)
+        document.getElementById('remark2').value = $(e).parent().parent().children("td:eq(6)").text();
+
+        layer.open({
+            type: 1,
+            title: '编辑产线',
+            maxmin: true,
+            shadeClose: false, //点击遮罩关闭层
+            area: ['800px', ''],
+            content: $('#add_menber_styl'),
+            btn: ['确认修改', '取消'],
+            yes: function (index, layero) {
+                var num = 0;
+                var str = "";
+                $(".add_menber2 input[type$='submit']").each(function (n) {
+                    if ($(this).val() == "") {
+                        layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                            title: '提示框',
+                            icon: 0,
+                        });
+                        num++;
+                        return false;
+                    }
+                });
+                if (num > 0) {
+                    return false;
+                } else {
+                    var data = {
+                        'id': $("#id2").val(),
+                        'productionName': $("#productionName2").val(),
+                        'productionCapacity': $("#productionCapacity2").val(),
+                        'principal': $("#principal2").val(),
+                        'num': $("#num2").val(),
+                        'state': $("input[name='form-field-radio2']:checked").val(),
+                        'remark': $("#remark2").val()
+                    };
+                    lines.splice($.inArray(updateLine, lines), 1);
+                    console.log("zyp" + lines);
+                    for (var cNo in lines) {
+                        $("#productionName2").css("border", "1px solid #f00");
+                        if (lines[cNo] == $("#productionName2").val()) {
+                            lines = [];
+                            layer.msg("生产线名称已存在", {icon: 2, time: 5000});
+                            return false;
+                        }
+                    }
+
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        async: false,//同步或异步,
+                        contentType: 'application/json',
+                        url: 'updProductionLine',
+                        data: JSON.stringify(data),
+                        success: function (d) {
+                        },
+                    })
+                    layer.alert('修改成功！', {
+                        title: '提示框',
+                        icon: 1,
+                    });
+                    layer.close(index);
+                    window.parent.document.getElementById('iframe').contentWindow.location.reload(true);
+                }
+            }
+        });
+    }
+
+    /*产线-删除*/
+    function member_del(obj, id) {
+        /*debugger;*/
+        layer.confirm('确认要删除吗？', function (index) {
+            var ids = $(obj).parent().parent().children("td:eq(0)").text()
+
+            $(obj).parents("tr").remove();
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                url: 'delProductionLine',
+                data: {id: ids},
+            })
+            layer.msg('已删除!', {icon: 1, time: 1000});
+        });
+    }
+
+
+</script>
+</body>
+</html>

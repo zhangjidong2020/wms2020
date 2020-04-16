@@ -1,0 +1,376 @@
+/* CSS Document */
+body {
+    padding: 0;
+    margin: 0;
+    font-family: "microsoft yahei";
+    font-size: 14px;
+}
+
+h1, h2, h3, h4, h5, h6, p, dl, dt, dd {
+    font-weight: normal;
+    padding: 0;
+    margin: 0;
+}
+
+ul, li {
+    padding: 0;
+    margin: 0;
+}
+
+ul li, li {
+    list-style: none;
+}
+
+.clear {
+    clear: both;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    border: none;
+}
+
+/* 大图片css */
+.fullSlide {
+    width: 70%;
+    height: 100%;
+    position: relative;
+    height: 700px;
+    background: #000;
+    float: left;
+    overflow: hidden;
+}
+
+.fullSlide .bd {
+    margin: 0 auto;
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.fullSlide .bd ul {
+    width: 100% !important;
+}
+
+.fullSlide .bd li {
+    width: 100% !important;
+    height: 800px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.fullSlide .bd li a {
+    display: block;
+    height: 700px;
+    overflow: hidden;
+}
+
+.fullSlide .hd {
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    bottom: 60px;
+    left: 0;
+    height: 30px;
+    line-height: 30px;
+}
+
+.fullSlide .hd ul {
+    text-align: center;
+}
+
+.fullSlide .hd ul li {
+    cursor: pointer;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    width: 11px;
+    height: 11px;
+    margin: 4px;
+    overflow: hidden;
+    background: #fff;
+    filter: alpha(opacity=80);
+    opacity: 0.8;
+    line-height: 999px;
+    border-radius: 20px;
+}
+
+.fullSlide .hd ul .on {
+    background: #FF7F00;
+}
+
+.fullSlide .prev,
+.fullSlide .next {
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    margin-top: -30px;
+    left: 2%;
+    z-index: 1;
+    width: 40px;
+    height: 60px;
+    background: url(../images/slider-arrow.png) -126px -137px #000 no-repeat;
+    cursor: pointer;
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+    display: none;
+}
+
+.fullSlide .next {
+    left: auto;
+    right: 2%;
+    background-position: -6px -137px;
+}
+
+.login_r {
+    float: left;
+    width: 30%;
+}
+
+.right-content {
+    width: 100%;
+}
+
+.right-content .login-header {
+    font-weight: 300;
+    left: 0;
+    margin: 0;
+    padding: 100px 60px 0;
+    position: relative;
+    right: 0;
+    top: 0;
+
+}
+
+.right-content .login-header .brand {
+    color: #438eb9;
+    font-size: 26px;
+    padding: 0;
+}
+
+.right-content .login-content {
+    color: #999;
+    margin: 0 auto;
+    padding: 30px;
+    width: auto;
+}
+
+.tab-content {
+    background: rgb(255, 255, 255) none repeat scroll 0 0;
+
+    border-left: 1px solid rgb(236, 236, 236);
+    border-radius: 0 3px 3px;
+    border-right: 1px solid rgb(236, 236, 236);
+    margin-bottom: 40px;
+    padding: 20px;
+}
+
+.form-group {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.form-control {
+    border-radius: 1px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+    font-size: 12px;
+    padding: 6px 8px;
+}
+
+.input-group {
+    border-collapse: separate;
+    display: table;
+    position: relative;
+}
+
+element.style {
+    border: 1px solid #aaa;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+a:link, a:hover, a:visited, a:active {
+    color: #438eb9;
+}
+
+a {
+    color: rgb(51, 128, 255);
+    outline: 0 none;
+    text-decoration: none;
+}
+
+.form-control {
+    border-radius: 1px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+    font-size: 12px;
+    padding: 6px 8px;
+}
+
+.input-lg {
+    border-radius: 6px;
+    font-size: 18px;
+    height: 46px;
+    line-height: 1.33333;
+    padding: 10px 16px;
+}
+
+.form-control {
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555;
+    display: block;
+    font-size: 14px;
+    height: 34px;
+    line-height: 1.42857;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    width: 95%;
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+input {
+    line-height: normal;
+}
+
+button, input, optgroup, select, textarea {
+    color: inherit;
+    font: inherit;
+    margin: 0;
+}
+
+.btn-green, .btn-green:hover, .btn-green:focus {
+    background: #1ab394 none repeat scroll 0 0;
+    border-color: #1ab394;
+}
+
+.btn-lg {
+    font-size: 15px;
+    font-weight: 300;
+    padding: 12px 14px;
+}
+
+.btn-primary {
+    background-color: rgb(77, 144, 253);
+    border-color: rgb(54, 128, 191);
+}
+
+.btn {
+    border-color: rgb(204, 204, 204);
+    border-radius: 0;
+    font-size: 16px;
+    height: 41px;
+    margin-bottom: 5px !important;
+    padding: 7px 11px;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.btn-group-lg > .btn, .btn-lg {
+    border-radius: 6px;
+    font-size: 18px;
+    line-height: 1.33333;
+    padding: 10px 16px;
+}
+
+.btn-primary {
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    color: #fff;
+}
+
+.btn {
+    -moz-user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+    margin-bottom: 0;
+    padding: 6px 12px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    margin-top: 40px;
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+button, html input[type="button"], input[type="reset"], input[type="submit"] {
+    cursor: pointer;
+}
+
+button, select {
+    text-transform: none;
+}
+
+button {
+    overflow: visible;
+}
+
+button, input, optgroup, select, textarea {
+    color: inherit;
+    font: inherit;
+    margin: 0;
+}
+
+hr {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #eee -moz-use-text-color -moz-use-text-color;
+    border-image: none;
+    border-style: solid none none;
+    border-width: 1px 0 0;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+hr {
+    box-sizing: content-box;
+    height: 0;
+}
+
+.system-notice {
+    color: #999;
+    line-height: 25px;
+    padding-left: 2%;
+    width: 98%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.form-group a {
+    color: #999;
+}
+
+.form-group a:hover {
+    color: #438eb9
+}
+
+.col-sm-12 {
+    text-align: center;
+}

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link th:href="@{/erp/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/erp/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/Widget/zTree/css/zTreeStyle/zTreeStyle.css}"
+          type="text/css">
+    <link th:href="@{/erp/Widget/icheck/icheck.css}" rel="stylesheet" type="text/css"/>
+    <!--[if IE 7]>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/font-awesome-ie7.min.css}"/>
+    <![endif]-->
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace-ie.min.css}"/>
+    <![endif]-->
+    <script th:src="@{/erp/js/jquery-1.9.1.min.js}"></script>
+    <script th:src="@{/erp/assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{/erp/assets/js/typeahead-bs2.min.js}"></script>
+    <!-- page specific plugin scripts -->
+    <script th:src="@{/erp/assets/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.bootstrap.js}"></script>
+    <!--    <script type="text/javascript" th:src="@{/erp/js/H-ui.js}"></script>
+        <script type="text/javascript" th:src="@{/erp/js/H-ui.admin.js}"></script>-->
+    <script th:src="@{/erp/assets/layer/layer.js}" type="text/javascript"></script>
+    <script th:src="@{/erp/assets/laydate/laydate.js}" type="text/javascript"></script>
+    <script type="text/javascript" th:src="@{/erp/Widget/zTree/js/jquery.ztree.all-3.5.min.js}"></script>
+    <script th:src="@{/erp/js/lrtk.js}" type="text/javascript"></script>
+    <style>
+        .imgg img {
+            max-width: 100px
+        }
+    </style>
+    <title>商品_信息管理</title>
+</head>
+<body>
+<div class=" page-content clearfix">
+    <div id="products_style">
+        <div class="search_style">
+            <form>
+                <ul class="search_content clearfix">
+                    <li><label class="l_f">商品名称</label><input name="pName" type="text" class="text_add"
+                                                              placeholder="请输入商品名称"
+                                                              style=" width:250px"/></li>
+                    <li style="width:90px;">
+                        <button type="button" class="btn_search" id="btn_search"><i class="icon-search"></i>查询</button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <div class="border clearfix">
+       <span class="l_f">
+
+        <a href="/products/good-add.html" title="添加商品" class="btn btn-warning Order_form"><i class="icon-plus"></i>添加商品</a>
+       </span>
+
+        </div>
+        <table class="table table-striped table-bordered table-hover" id="sample-table">
+            <thead>
+            <tr>
+                <th hidden="hidden"></th>
+                <th hidden="hidden"></th>
+                <th hidden="hidden"></th>
+                <th hidden="hidden"></th>
+                <th hidden="hidden"></th>
+                <th width="80px">商品编号</th>
+                <th width="120px">商品名称</th>
+                <th width="100px">商品图片</th>
+                <th width="100px">商品种类</th>
+                <th width="100px">零售价(￥)</th>
+                <th width="100px">类别(企业)</th>
+                <th width="155px">添加时间</th>
+                <th hidden="hidden"></th>
+                <th width="80px">审核状态</th>
+                <th width="70px">商品状态</th>
+                <th width="210px">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+</div>
+<!--查询商品图层-->
+<div class="select_menber" id="select_menber_style" style="display:none">
+
+    <ul class=" page-content">
+        <div class="Operate_cont clearfix">
+            商品名称：<label id="pName"><span class="c-red"></span></label>
+        </div>
+        <div class="Operate_cont clearfix">
+            <label><span class="c-red"></span>商品图片： <a href="#" class="product_Display imgg"><img id="pImg"
+                                                                                                  title="旭派电池"/></a>&nbsp;</label>
+        </div>
+        <div class="Operate_cont clearfix">
+            商品编号：<label id="pNumber"><span class="c-red"></span></label>
+
+        </div>
+
+        <div class="Operate_cont clearfix">
+            商品分类：<label id="pEnterprise"><span class="c-red"></span>&nbsp;</label>
+
+        </div>
+        <div class="Operate_cont clearfix">
+            商品种类：<label id="pKind"><span class="c-red"></span>&nbsp;</label>
+
+        </div>
+        <div class="Operate_cont clearfix">
+            产地：<label id="pLocal"><span class="c-red"></span></label>
+        </div>
+        <div class="Operate_cont clearfix">
+            材质：<label id="pMaterial"> <span class="c-red"></span></label>
+
+        </div>
+        <div class="Operate_cont clearfix">
+            品牌：<label id="pBrand"><span class="c-red"></span></label>
+
+        </div>
+        <div class="Operate_cont clearfix">
+            零售价格：<label id="pPrice"><span class="c-red"></span></label>元
+
+        </div>
+        <div class="Operate_cont clearfix">
+            商品质量：<label id="pQuality"><span class="c-red"></span></label>kg
+
+        </div>
+
+
+        <div class="Operate_cont clearfix">
+            备注：<label id="pRemarks"> </label>
+
+        </div>
+        <div class="">
+            <div class="" style=" text-align:center"></div>
+        </div>
+    </ul>
+
+</div>
+</div>
+</div>
+</div>
+<script>
+    function change(v) {
+        if (v == 1) {
+            document.getElementById("test666").innerHTML = " "
+            document.getElementById("test777").innerHTML = "<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*成本价格：</b><input type='text' name='zx' value='' />&nbsp;元<br><br>";
+            document.getElementById("test888").innerHTML = "<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*零售价格：</b><input type='text' name='zx' value='' />&nbsp;元";
+        } else if (v == 2) {
+            document.getElementById("test666").innerHTML = "<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*请设置积分：</b><input type='text' name='zx' value='' />";
+            document.getElementById("test777").innerHTML = "";
+            document.getElementById("test888").innerHTML = "";
+        }
+    }
+
+    function fun() {
+        document.getElementById("test1").innerHTML += '<input type="text" name="test" size="5"/>&nbsp;&nbsp;:&nbsp;&nbsp;<input type="text" name="test2" size="10"/><a href="#">清除</a>&nbsp;<br><br>';
+    }
+
+    var cg = function (ck) {
+        var div = ck.parentElement
+            .parentElement
+            .nextElementSibling;
+        if (ck.checked) {
+            div.style.display = "block";
+            yqm.value = 1;
+        } else {
+            div.style.display = "none";
+            yqm.value = 0;
+        }
+    }
+
+
+    /*商品-添加*/
+    $('#products_add').on('click', function () {
+        layer.open({
+            type: 1,
+            title: '添加商品信息',
+            maxmin: true,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['600px', ''],
+            content: $('#add_menber_style'),
+            btn: ['提交', '取消'],
+            yes: function (index, layero) {
+                var num = 0;
+                var str = "";
+                $(".add_menber input[type$='text']").each(function (n) {
+                    if ($(this).val() == "") {
+
+                        layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                            title: '提示框',
+                            icon: 0,
+                        });
+                        num++;
+                        return false;
+                    }
+                });
+                if (num > 0) {
+                    return false;
+                } else {
+                    layer.alert('添加成功！', {
+                        title: '提示框',
+                        icon: 1,
+                    });
+                    layer.close(index);
+                }
+            }
+        });
+    });
+
+    /*商品-查看*/
+    function member_select(data) {
+        $("#pKind").html($(data).parent().parent().children("td:eq(0)").text());
+        $("#pQuality").html($(data).parent().parent().children("td:eq(1)").text());
+        $("#pLocal").html($(data).parent().parent().children("td:eq(2)").text());
+        $("#pBrand").html($(data).parent().parent().children("td:eq(3)").text());
+        $("#pRemarks").html($(data).parent().parent().children("td:eq(4)").text());
+        $("#pNumber").html($(data).parent().parent().children("td:eq(5)").text());
+        $("#pName").html($(data).parent().parent().children("td:eq(6)").text());
+        $("#pImg").attr("src", $(data).parent().parent().find("td:eq(7) img").attr("src"));
+        $("#pMaterial").html($(data).parent().parent().children("td:eq(8)").text());
+        $("#pPrice").html($(data).parent().parent().children("td:eq(9)").text());
+        $("#pEnterprise").html($(data).parent().parent().children("td:eq(10)").text());
+
+        layer.open({
+            type: 1,
+            title: '查看商品属性',
+            maxmin: true,
+            shadeClose: false, //点击遮罩关闭层
+            area: ['600px', ''],
+            content: $('#select_menber_style'),
+            btn: ['确认'],
+        });
+    }
+
+    /*商品-编辑*/
+    function member_edit(id) {
+        layer.open({
+            type: 1,
+            title: '修改属性',
+            maxmin: true,
+            shadeClose: false, //点击遮罩关闭层
+            area: ['600px', ''],
+            content: $('#update_menber_style'),
+            btn: ['提交', '取消'],
+            yes: function (index, layero) {
+                var num = 0;
+                var str = "";
+                $(".update_menber input[type$='text']").each(function (n) {
+                    if ($(this).val() == "") {
+
+                        layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                            title: '提示框',
+                            icon: 0,
+                        });
+                        num++;
+                        return false;
+                    }
+                });
+                if (num > 0) {
+                    return false;
+                } else {
+                    layer.alert('修改成功！', {
+                        title: '提示框',
+                        icon: 1,
+                    });
+                    layer.close(index);
+                }
+            }
+        });
+    }
+
+    $(function () {
+        var table = $('#sample-table').dataTable({
+            "autoWidth": false,//当重复刷新表格时，我的页面会出现变形的，现象，加了这个就好了
+            searching: false,
+            serverSide: true,
+            ajax: {
+                url: '/products/findAllProduct',
+                type: 'post',
+                data: function (d) {
+                    var data = $('form').serialize();
+                    var searchParame = {
+                        start: d.start / 10 + 1,
+                        length: d.length,
+                    };
+                    data = data + '&' + $.param(searchParame);
+                    return data;
+                }
+            },
+            columns: [
+                {"data": "pkind", "className": "hidden"},
+                {"data": "pquality", "className": "hidden"},
+                {"data": "plocal", "className": "hidden"},
+                {"data": "pbrand", "className": "hidden"},
+                {"data": "premarks", "className": "hidden"},
+                {"data": "pnumber"},
+                {"data": "pname"},
+                {
+                    "data": "pimg", "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).addClass("order_product_name");
+                        $(td).empty().append('<a onclick="member_select(this)" href="javascript:;" class="product_Display imgg"><img src="/images/' + cellData + '" title="' + rowData.pname + '"/>')
+                    }
+                },
+                {"data": "pmaterial"},
+                {"data": "pprice"},
+                {"data": "name"},
+                {"data": "pAddtime"},
+                {"data": "id", "className": "hidden"},
+                {
+                    "data": "astatus", "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).addClass("text-l");
+                        if (cellData == '-1') {
+                            $(td).html("待审核");
+                        } else if (cellData == '0') {
+                            $(td).html("未通过");
+                        } else if (cellData == '1') {
+                            $(td).html("通过")
+                        }
+                    }
+                },
+                {
+                    "data": "pstatus", "createdCell": function (td, cellData, rowData, row, col) {
+                        if (cellData == "1") {
+                            $(td).addClass("td-status")
+                            $(td).empty().append('<span class="label label-success radius">已上架</span>')
+                        } else if (cellData == "-1") {
+                            $(td).addClass("td-status")
+                            $(td).empty().append('<span class="label label-defaunt radius">已下架</span>')
+                        }
+                    }
+                },
+                {
+                    "data": "id", "createdCell": function (td, cellData, rowData, row, col) {
+                        if (rowData.pstatus == "-1") {
+                            if (rowData.astatus == "-1" || rowData.astatus == "0") {
+                                $(td).empty().append(' <a href="javascript:;" title="上架商品"  class="btn btn-xs "><i class="icon-ok bigger-120"></i></a>\n' +
+                                    '                    <a title="查看商品属性" onclick="member_select(this)" href="javascript:;" class="btn btn-xs btn-warning"><i class="icon-list bigger-120"></i></a>\n' +
+                                    '                    <a title="编辑"  href="/products/findOne?id=' + cellData + '" class="btn btn-xs btn-info" ><i class="icon-edit bigger-120"></i></a>')
+                            } else {
+                                $(td).addClass("td-manage")
+                                $(td).empty().append(' <a onClick="member_start(this,\'' + cellData + '\')"  href="javascript:;" title="上架商品"  class="btn btn-xs "><i class="icon-ok bigger-120"></i></a>\n' +
+                                    '                    <a title="查看商品属性" onclick="member_select(this)" href="javascript:;" class="btn btn-xs btn-warning"><i class="icon-list bigger-120"></i></a>\n' +
+                                    '                    <a title="编辑"  href="/products/findOne?id=' + cellData + '" class="btn btn-xs btn-info" ><i class="icon-edit bigger-120"></i></a>')
+                            }
+                        } else {
+                            $(td).addClass("td-manage")
+                            $(td).empty().append(' <a onClick=" member_stop(this,\'' + cellData + '\')"  href="javascript:;" title="下架商品"  class="btn btn-xs btn-success"><i class="icon-ok bigger-120"></i></a>\n' +
+                                '                    <a title="查看商品属性" onclick="member_select(this)" href="javascript:;" class="btn btn-xs btn-warning"><i class="icon-list bigger-120"></i></a>\n' +
+                                '                    <a title="编辑"  href="/products/findOne?id=' + cellData + '" class="btn btn-xs btn-info" ><i class="icon-edit bigger-120"></i></a>')
+                        }
+                    }
+                },
+            ]
+        })
+        /*搜索*/
+        $('#btn_search').click(function () {
+            table.fnUpdate();
+        })
+
+        $('table th input:checkbox').on('click', function () {
+            var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+                .each(function () {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+        });
+
+
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            var w2 = $source.width();
+
+            if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2)) return 'right';
+            return 'left';
+        }
+    });
+    $(function () {
+        $("#products_style").fix({
+            float: 'left',
+            //minStatue : true,
+            skin: 'green',
+            durationTime: false,
+            spacingw: 30,//设置隐藏时的距离
+            spacingh: 260,//设置显示时间距
+        });
+    });
+</script>
+<script type="text/javascript">
+    //初始化宽度、高度
+    $(".widget-box").height($(window).height() - 215);
+    $(".table_menu_list").width($(window).width() - 260);
+    $(".table_menu_list").height($(window).height() - 215);
+    //当文档窗口发生改变时 触发
+    $(window).resize(function () {
+        $(".widget-box").height($(window).height() - 215);
+        $(".table_menu_list").width($(window).width() - 260);
+        $(".table_menu_list").height($(window).height() - 215);
+    })
+
+    /*******树状图*******/
+    var setting = {
+        view: {
+            dblClickExpand: false,
+            showLine: false,
+            selectedMulti: false
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "pid",
+                rootPId: ""
+            }
+        },
+        callback: {
+            beforeClick: function (treeId, treeNode) {
+                var zTree = $.fn.zTree.getZTreeObj("tree");
+                if (treeNode.isParent) {
+                    zTree.expandNode(treeNode);
+                    return false;
+                } else {
+                    demoIframe.attr("src", treeNode.file + ".html");
+                    return true;
+                }
+            }
+        }
+    };
+
+    var zNodes = [
+        {id: 1, pId: 0, name: "商品分类列表", open: true},
+        {id: 11, pId: 1, name: "电池类"},
+        {id: 111, pId: 11, name: "电池类1"},
+        {id: 112, pId: 11, name: "电池类2"},
+        {id: 113, pId: 11, name: "电池类3"},
+        {id: 114, pId: 11, name: "电池类4"},
+        {id: 115, pId: 11, name: "电池类5"},
+        {id: 12, pId: 1, name: "电动车类"},
+        {id: 121, pId: 12, name: "电动车类1 "},
+        {id: 122, pId: 12, name: "电动车类2 "},
+        {id: 13, pId: 1, name: "默认类1"},
+        {id: 131, pId: 13, name: "默认类11 "},
+        {id: 122, pId: 13, name: "默认类22 "},
+        {id: 14, pId: 1, name: "默认类2"},
+        {id: 141, pId: 14, name: "默认类222 "},
+        {id: 42, pId: 14, name: "默认类333 "},
+    ];
+
+
+    var code;
+
+    function showCode(str) {
+        if (!code) code = $("#code");
+        code.empty();
+        code.append("<li>" + str + "</li>");
+    }
+
+    $(document).ready(function () {
+        var t = $("#treeDemo");
+        t = $.fn.zTree.init(t, setting, zNodes);
+        demoIframe = $("#testIframe");
+        var zTree = $.fn.zTree.getZTreeObj("tree");
+    });
+
+    /*产品-停用*/
+    function member_stop(obj, id) {
+        layer.confirm('确认要下架吗？', function (index) {
+            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" class="btn btn-xs " onClick="member_start(this, \'' + id + '\')" href="javascript:;" title="上架"><i class="icon-ok bigger-120"></i></a>');
+            $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
+            $(obj).remove();
+            $.ajax({
+                url: '/products/updatePstatus',
+                data: {
+                    id: id,
+                    status: "已下架",
+                },
+                success: function (data) {
+                    layer.msg('已下架!', {icon: 5, time: 1000});
+                }
+            })
+        });
+    }
+
+    /*产品-启用*/
+    function member_start(obj, id) {
+        console.log(id);
+        layer.confirm('确认要上架吗？', function (index) {
+            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" class="btn btn-xs btn-success" onClick="member_stop(this,\'' + id + '\')" href="javascript:;" title="下架"><i class="icon-ok bigger-120"></i></a>');
+            $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已上架</span>');
+            $(obj).remove();
+            $.ajax({
+                url: '/products/updatePstatus',
+                data: {
+                    id: id,
+                    status: "已上架",
+                },
+                success: function (data) {
+                    layer.msg('已上架!', {icon: 6, time: 1000});
+                }
+            })
+        });
+    }
+
+    /*产品-编辑*/
+
+    /*产品-添加*/
+    function products_add(title, url, id, w, h) {
+        layer_show(title, url, w, h);
+    }
+
+    /*产品-添加*/
+    function good_list(title, url, id, w, h) {
+        layer_show(title, url, w, h);
+    }
+
+    /*产品-删除*/
+    function member_del(obj, id) {
+        layer.confirm('确认要删除吗？', function (index) {
+            $(obj).parents("tr").remove();
+            layer.msg('已删除!', {icon: 1, time: 1000});
+        });
+    }
+
+    //面包屑返回值
+    var index = parent.layer.getFrameIndex(window.name);
+    parent.layer.iframeAuto(index);
+    $('.Order_form').on('click', function () {
+        var cname = $(this).attr("title");
+        var chref = $(this).attr("href");
+        var cnames = parent.$('.Current_page').html();
+        var href = parent.$("#iframe").attr("src");
+        parent.$('#parentIframe').html(cname);
+        parent.$('#iframe').attr("src", chref).ready();
+        ;
+        parent.$('#parentIframe').css("display", "inline-block");
+        parent.$('.Current_page').attr({"name": href, "href": "javascript:void(0)"}).css({
+            "color": "#4c8fbd",
+            "cursor": "pointer"
+        });
+        //parent.$('.Current_page').html("<a href='javascript:void(0)' name="+href+" class='iframeurl'>" + cnames + "</a>");
+        parent.layer.close(index);
+
+    });
+</script>
+</body>
+</html>

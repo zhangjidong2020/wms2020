@@ -1,0 +1,684 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link th:href="@{/erp/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/erp/css/style.css}"/>
+    <link th:href="@{/erp/assets/css/codemirror.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/erp/font/css/font-awesome.min.css}"/>
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" th:href="@{/erp/assets/css/ace-ie.min.css}"/>
+    <![endif]-->
+    <script th:src="@{/erp/js/jquery-1.9.1.min.js}"></script>
+    <script th:src="@{/erp/assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{/erp/assets/js/typeahead-bs2.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/erp/assets/js/jquery.dataTables.bootstrap.js}"></script>
+    <script th:src="@{/erp/assets/layer/layer.js}" type="text/javascript" th:inline="none"></script>
+    <script th:src="@{/erp/assets/laydate/laydate.js}" type="text/javascript" th:inline="none"></script>
+    <script th:src="@{/erp/js/lrtk.js}" type="text/javascript" th:inline="none"></script>
+    <title>订单列表</title>
+</head>
+<body>
+<div class="clearfix">
+    <div class="handling_style" id="order_hand">
+        <div id="scrollsidebar" class="left_Treeview">
+            <div class="show_btn" id="rightArrow"><span></span></div>
+            <div class="widget-box side_content">
+                <div class="side_title"><a title="隐藏" class="close_btn"><span></span></a></div>
+                <div class="side_list">
+                    <div class="widget-header header-color-green2">
+                        <h4 class="lighter smaller">订单类型1</h4>
+                    </div>
+                    <div class="widget-body">
+                        <ul class="b_P_Sort_list">
+                            <li><i class="orange  fa fa-reorder"></i><a href="#" onclick="aaa" id="aaa"
+                                                                        th:text="'全部订单('+${count0}+')'"></a></li>
+                            <li><i class="fa fa-sticky-note pink "></i> <a href="#" onclick="payment" id="Payment"
+                                                                           th:text="'已支付('+${count1}+')'"></a></li>
+                            <li><i class="fa fa-sticky-note pink "></i> <a href="#" onclick="bbb" id="bbb"
+                                                                           th:text="'待发货('+${count2}+')'"></a></li>
+                            <li><i class="fa fa-sticky-note pink "></i> <a href="#" onclick="ccc" id="ccc"
+                                                                           th:text="'已发货('+${count3}+')'"></a></li>
+                            <li><i class="fa fa-sticky-note pink "></i> <a href="#" onclick="ddd" id="ddd"
+                                                                           th:text="'已完成('+${count4}+')'"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="order_list_style" id="order_list_style">
+
+            <div class="search_style">
+                <span class="l_f">
+                    <a href="javascript:void(0)" id="member_add" class="btn btn-warning"><i
+                            class="icon-plus"></i>添加订单</a>
+                </span>
+
+                <!--查询-->
+                <form>
+                    <ul class="search_content clearfix">
+                        <li><label class="l_f">订单编号</label><input name="orderId" type="text" id="order_id"
+                                                                  class="text_add" placeholder="输入订单编号"
+                                                                  style=" width:250px"/></li>
+                        <li><label class="l_f">交易时间</label><input class="inline laydate-icon" id="start"
+                                                                  style=" margin-left:10px;" name="dealTime"></li>
+                        <li style="display: none"><label class="l_f">订单状态</label><input class="text_add"
+                                                                                        id="orderStatus"
+                                                                                        style="margin-left:10px"
+                                                                                        name="orderStatus"></li>
+                        <li style="width:90px;">
+                            <button type="button" class="btn_search" id="select"><i class="fa fa-search"></i>查询</button>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+
+
+            <!--交易订单列表-->
+            <div class="Orderform_list">
+                <table class="table table-striped table-bordered table-hover" style="width:100%" id="sample-table">
+                    <thead>
+                    <tr>
+                        <th width="80px">序号</th>
+                        <th width="120px">订单编号</th>
+                        <th width="100px">订单类型</th>
+                        <th width="150px">产品名称</th>
+                        <th width="100px">客户名称</th>
+                        <th width="100px">支付方式</th>
+                        <th width="100px">交易金额</th>
+                        <th width="100px">交易时间</th>
+                        <th width="150px">所属分类</th>
+                        <th width="80px">数量</th>
+                        <th width="100px">状态</th>
+                        <th width="100px">说明</th>
+                        <th width="150px">查看详情</th>
+                        <th width="150px">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+</div>
+<div class="add_menber" id="add_menber_style" style="display:none">
+
+    <ul class=" page-content">
+        <li style="position: relative;left: -5px;"><label class="label_name" style="width: 85px;">订单编号：</label><span
+                class="add_name"><input name="订单编号" readonly="readonly" type="text" class="text_add"
+                                        id="orderid"/></span>
+            <div class="prompt r_f"></div>
+        </li>
+        <li><label class="label_name">产品名称：</label><span class="add_name">
+         <select onblur="judge_product(this)" name='sldd' style='width:150px;margin-left:10px;' id="allProduct">
+             <option value=''>请选择产品</option>
+         </select></span>
+            <div class="prompt r_f"></div>
+        </li>
+        <li><label class="label_name">客户名称：</label><span class="add_name">
+            <select onblur="judge_company(this)" name='sldd' style='width:150px;margin-left:10px;' id="allCustom">
+                <option value=''>请选择客户</option>
+
+    </select></span>
+            <div class="prompt r_f"></div>
+        </li>
+        <li><label class="label_name">交易金额：</label><span class="add_name">
+            <input placeholder="请输入金额" onblur="judge_money(this)" name="交易金额" type="text" class="text_add" id="money"/></span>
+        </li>
+        <li><label class="label_name">支付方式：</label><span class="add_name">
+            <select onblur="judge_paytype(this)" name='sldd' style='width:150px;margin-left:10px;' id="orderType">
+            <option value=''></option><option value='在线支付'>在线支付</option>
+                <option value='线下支付'>线下支付</option>
+    </select></span>
+        </li>
+
+        <li><label class="label_name">数量：</label><span class="add_name">
+            <input onblur="judge_number(this)" placeholder="请输入整数" name="数量" type="text" class="text_add" id="number"/></span>
+            <div class="prompt r_f"></div>
+        </li>
+        <li><label class="label_name">下单者：</label><span class="add_name">
+            <input onblur="judge_holder(this)" placeholder="请输入两个以上的汉字" name="下单者" type="text" class="text_add"
+                   id="orderHolder"/>
+            </span>
+            <div class="prompt r_f"></div>
+        </li>
+
+
+    </ul>
+</div>
+<!--编辑打印机图层-->
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+<script>
+    var test1 = /^[0-9]*$/;
+    var test2 = /^[\u4e00-\u9fa5]{2,}$/;
+
+
+    /*模糊查询功能以及查询*/
+    $(function () {
+        var table = $('#sample-table').dataTable({
+            searching: false,
+            serverSide: true,   //开始服务器分页
+            aoColumnDefs: [
+                {"orderable": false, "aTargets": [1, 2, 3, 4, 5, 6]}// 制定列不参与排序
+            ],
+            ajax: {
+                url: '[[@{/order/page}]]',
+                type: 'post',
+                data: function (d) {
+
+                    var data = $('form').serialize();   //获取查询条件
+                    //获取分页信息
+                    var searchParams = {
+                        start: d.start,
+
+                        length: d.length,
+                    };
+                    data = data + '&' + $.param(searchParams) + $('#status').text();
+                    return data;
+
+                }
+            },
+            columns: [
+                {
+                    "data": "id", "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).text(row + 1);
+                    }
+                },
+                {"data": "order_id", 'sDefaultContent': ''},
+                {"data": "order_type", 'sDefaultContent': ''},
+                {"data": "p_name", 'sDefaultContent': ''},
+                {"data": "company_name", 'sDefaultContent': ''},
+                {"data": "pay_type", 'sDefaultContent': ''},
+                {"data": "money", 'sDefaultContent': ''},
+                {"data": "deal_times", 'sDefaultContent': ''},
+                {"data": "p_enterprise", 'sDefaultContent': ''},
+                {"data": "number", 'sDefaultContent': ''},
+                {
+                    "data": "order_status",
+                    'sDefaultContent': '',
+                    "createdCell": function (td, cellData, rowData, row, col) {
+
+                        if (cellData == "1") {
+                            $(td).empty().append('<span class="label label-success radius">已支付</span>');
+                        } else if (cellData == "2") {
+                            $(td).empty().append('<span class="label label-info radius">待发货</span>');
+                        } else if (cellData == "3") {
+                            $(td).empty().append('<span class="label label-info radius">已发货</span>');
+                        } else if (cellData == "4") {
+                            $(td).empty().append('<span class="label label-info radius">已完成</span>');
+                        }
+                    }
+                },
+                {"data": "explains", 'sDefaultContent': ''},
+                {
+                    "data": "number", 'sDefaultContent': '', "createdCell": function (td, cellData, rowData, row, col) {
+
+                        $(td).empty().append('<a title="查看详情"  href="/order/dealauditing?orderId=' + rowData.order_id + '"  class="btn btn-xs btn-success" ><i class="icon-list bigger-120"></i></a> ');
+                    }
+                },
+                {
+                    "data": "order_status",
+                    'sDefaultContent': '',
+                    "createdCell": function (td, cellData, rowData, row, col) {
+
+                        if (cellData < '2') {
+                            $(td).empty().append(' <input type="button" value="生产" id="product_go" onclick="product_go(this)"/> ' +
+                                '<input type="button" value="发货" id="go_goods" onclick="go_goods(this)"/>');
+                        } else {
+                            $(td).empty().append(' <input style="display:none" type="button" value="生产" id="product_go" onclick="product_go(this)"/> ' +
+                                '<input style="display:none" type="button" value="发货" id="go_goods" onclick="go_goods(this)"/>');
+                        }
+
+                    }
+                },
+
+            ]
+        });
+
+        //搜索按钮事件
+        $('#select').click(function () {
+            table.fnUpdate();
+        })
+        $('#aaa').click(function () {
+            $('#orderStatus').show();
+            $('#orderStatus').val("");
+            table.fnUpdate();
+        })
+
+        $('#Payment').click(function () {
+            $('#orderStatus').show();
+            $('#orderStatus').val("1");
+            table.fnUpdate();
+        })
+        $('#bbb').click(function () {
+            $('#orderStatus').show();
+            $('#orderStatus').val("2");
+            table.fnUpdate();
+        })
+        $('#ccc').click(function () {
+            $('#orderStatus').show();
+            $('#orderStatus').val("3");
+            table.fnUpdate();
+        })
+        $('#ddd').click(function () {
+            $('#orderStatus').show();
+            $('#orderStatus').val("4");
+            table.fnUpdate();
+        })
+
+    })
+
+    function payment() {
+        $('#Payment').click(function () {
+
+        })
+
+
+    }
+
+
+    $(function () {
+        $("#order_hand").fix({
+            float: 'left',
+            //minStatue : true,
+            skin: 'green',
+            durationTime: false,
+            spacingw: 30,//设置隐藏时的距离
+            spacingh: 250,//设置显示时间距
+            table_menu: '.order_list_style',
+        });
+    });
+
+    laydate.render({
+        elem: '#start'
+        , type: 'datetime'
+    })
+
+
+    //初始化宽度、高度
+    $(".widget-box").height($(window).height());
+    $(".order_list_style").width($(window).width() - 220);
+    $(".order_list_style").height($(window).height() - 30);
+    //当文档窗口发生改变时 触发
+    $(window).resize(function () {
+        $(".widget-box").height($(window).height());
+        $(".order_list_style").width($(window).width() - 234);
+        $(".order_list_style").height($(window).height() - 30);
+    });
+
+    /*状态-结束*/
+    function member_stop(obj, id) {
+        layer.confirm('确认修改状态为已结束？', function (index) {
+            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" class="btn btn-xs " onClick="member_start(this,id)" href="javascript:;" title="进行中"><i class="fa fa-close bigger-120"></i></a>');
+            $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已结束</span>');
+            $(obj).remove();
+            layer.msg('已结束!', {icon: 5, time: 1000});
+        });
+    }
+
+
+    //订单列表
+    jQuery(function ($) {
+        //全选操作
+        $('table th input:checkbox').on('click', function () {
+            var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+                .each(function () {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+
+        });
+    });
+
+    $(function () {
+        $.ajax({
+            url: "[[@{/order/allproduct}]]",
+            success: function (d) {
+                if (d.rs) {
+                    var data = d.data;
+                    for (var i in data) {
+                        $('#allProduct:last').append("<option value=" + data[i].id + ">" + data[i].pname + "</option>>")
+                    }
+                } else {
+                    layer.msg('产品加载失败', {icon: 2, time: 2000});
+                }
+
+
+            }
+        })
+    });
+
+    $(function () {
+        $.ajax({
+            url: "[[@{/order/allcustom}]]",
+            success: function (d) {
+                if (d.rs) {
+                    var data = d.data;
+                    for (var i in data) {
+                        $('#allCustom:last').append("<option value=" + data[i].id + ">" + data[i].companyName + "</option>>")
+                    }
+                } else {
+                    layer.msg('顾客加载失败', {icon: 2, time: 2000});
+                }
+
+
+            }
+        })
+    });
+
+    $('#member_add').on('click', function () {
+        $('#orderid').val(new Date().getTime())
+        layer.open({
+            type: 1,
+            title: '添加订单',
+            maxmin: true,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['800px', ''],
+            content: $('#add_menber_style'),
+            btn: ['提交', '取消'],
+            yes: function (index, layero) {
+                var num = 0;
+
+                if (!test1.test($('#money').val())) {
+                    $('#money').css("border", "1px solid #f00")
+                    layer.msg('输入金钱格式不对', {icon: 2, time: 1000});
+                    return;
+                } else {
+                    $('#money').css("border", "1px solid #D5D5D5")
+                }
+
+                if (!test1.test($('#number').val())) {
+                    $('#number').css("border", "1px solid #f00")
+                    layer.msg('输入数量格式不对', {icon: 2, time: 1000});
+                    return;
+                } else {
+                    $('#number').css("border", "1px solid #D5D5D5")
+                }
+                if (!test2.test($('#orderHolder').val())) {
+                    $('#orderHolder').css("border", "1px solid #f00")
+                    layer.msg('输入下单者格式不对格式不对', {icon: 2, time: 1000});
+                    return;
+                } else {
+                    $('#orderHolder').css("border", "1px solid #D5D5D5")
+                }
+
+
+                if ($('#allCustom').val() == "") {
+                    $('#allCustom').css("border", "1px solid #f00");
+                    layer.msg("请选择客户", {icon: 2, time: 1000});
+                    num++;
+
+                } else {
+                    $('#allCustom').css("border", "1px solid #D5D5D5");
+
+                }
+
+
+                if ($('#allProduct').val() == "") {
+                    $('#allProduct').css("border", "1px solid #f00");
+                    layer.msg("请选择产品", {icon: 2, time: 1000});
+                    num++;
+                } else {
+                    $('#allProduct').css("border", "1px solid #D5D5D5");
+
+                }
+
+
+                if ($('#orderType').val() == "") {
+                    $('#orderType').css("border", "1px solid #f00");
+                    layer.msg("请选择付款类型", {icon: 2, time: 1000});
+                    num++;
+                } else {
+                    $('#orderType').css("border", "1px solid #D5D5D5");
+                }
+
+                if (num > 0) {
+                    return false;
+                } else {
+
+                    var data = {};
+                    data.orderId = $('#orderid').val();
+                    data.productId = $('#allProduct').val();
+                    data.customId = $('#allCustom').val();
+                    data.money = $('#money').val();
+                    data.orderType = $('#orderType').val();
+                    data.number = $('#number').val();
+                    data.orderHolder = $('#orderHolder').val();
+
+
+                    $.ajax({
+                        url: "[[@{/order/addorderlist}]]",
+                        type: 'post',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json',
+                        success: function (d) {
+                            var num = 0;
+                            var str = "";
+
+                            $(".add_menber input[type$='text']").each(function (n) {
+                                if ($(this).val() == "") {
+
+                                    layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                                        title: '提示框',
+                                        icon: 0,
+                                    });
+                                    num++;
+                                    return false;
+                                }
+                            });
+                            if (num > 0) {
+                                return false;
+                            } else {
+                                layer.alert('添加成功！', {
+                                    title: '提示框',
+                                    icon: 1,
+                                });
+
+
+                            }
+                            window.parent.document.getElementById('iframe').contentWindow.location.reload(true);
+                            /*layer.close(index);*/
+                        }
+                    });
+                }
+
+            }
+
+        })
+
+
+    });
+
+
+    /*
+    生产
+     */
+    function product_go(eq) {
+        /*获取订单编号*/
+        var orderid = $(eq).parent().parent().children("td:eq(1)").text()
+        console.log(orderid);
+        var orderstatus = $(eq).parent().parent().children("td:eq(10)").text()
+        var explain = $(eq).parent().parent().children("td:eq(11)").text()
+
+        $(function () {
+            $.ajax({
+                url: "[[@{/order/goproduce}]]",
+                data: {
+                    orderId: orderid
+
+                },
+                success: function (data) {
+
+
+                    var num = 0;
+                    var str = "";
+
+                    $(".add_menber input[type$='text']").each(function (n) {
+
+
+                    });
+                    if (num > 0) {
+                        return false;
+                    } else {
+                        layer.alert('生产成功！', {
+                            title: '提示框',
+                            icon: 1,
+                        });
+
+
+                    }
+
+                    window.parent.document.getElementById('iframe').contentWindow.location.reload(true);
+                    /* layer.close(index);*/
+                }
+            })
+
+        })
+
+    }
+
+    /*
+    * 发货
+    * */
+
+    function go_goods(eq) {
+        /*获取订单编号*/
+        var orderid = $(eq).parent().parent().children("td:eq(1)").text()
+        var orderstatus = $(eq).parent().parent().children("td:eq(10)").text()
+        var explain = $(eq).parent().parent().children("td:eq(11)").text()
+        console.log(orderid);
+        $(function () {
+            $.ajax({
+                url: "[[@{/order/gogoods}]]",
+                data: {
+                    orderId: orderid
+
+                },
+                success: function (data) {
+
+
+                    var num = 0;
+                    var str = "";
+
+                    $(".add_menber input[type$='text']").each(function (n) {
+
+
+                    });
+                    if (num > 0) {
+                        return false;
+                    } else {
+                        layer.alert('可以直接发货！', {
+                            title: '提示框',
+                            icon: 1,
+
+
+                        });
+
+
+                    }
+
+                    window.parent.document.getElementById('iframe').contentWindow.location.reload(true);
+                    /*layer.close(index);*/
+                }
+            })
+
+        })
+
+    }
+
+    /**
+     * 判断让添加不能为空
+     * @param obj
+     * @returns {boolean}
+     */
+
+
+    function judge_money(obj) {
+        if ($(obj).val() == "") {
+            $(obj).css("border", "1px solid #f00");
+            layer.msg("请输入金钱", {icon: 2, time: 1000});
+            return true;
+        } else {
+            $(obj).css("border", "1px solid #D5D5D5");
+            return false;
+        }
+    }
+
+    function judge_holder(obj) {
+        if ($(obj).val() == "") {
+            $(obj).css("border", "1px solid #f00");
+            layer.msg("请输入下单者", {icon: 2, time: 1000});
+            return true;
+        } else {
+            $(obj).css("border", "1px solid #D5D5D5");
+            return false;
+        }
+    }
+
+    function judge_number(obj) {
+        if ($(obj).val() == "") {
+            $(obj).css("border", "1px solid #f00");
+            layer.msg("请输入商品数量", {icon: 2, time: 1000});
+            return true;
+        } else {
+            $(obj).css("border", "1px solid #D5D5D5");
+            return false;
+        }
+    }
+
+    function judge_product(obj) {
+        if ($(obj).val() == "") {
+            $(obj).css("border", "1px solid #f00");
+            layer.msg("请选择产品名称", {icon: 2, time: 1000});
+            return true;
+        } else {
+            $(obj).css("border", "1px solid #D5D5D5");
+            return false;
+        }
+    }
+
+    function judge_company(obj) {
+        if ($(obj).val() == "") {
+            $(obj).css("border", "1px solid #f00");
+            layer.msg("请选择客户", {icon: 2, time: 1000});
+            return true;
+        } else {
+            $(obj).css("border", "1px solid #D5D5D5");
+            return false;
+        }
+    }
+
+    function judge_paytype(obj) {
+        if ($(obj).val() == "") {
+            $(obj).css("border", "1px solid #f00");
+            layer.msg("请选择支付方式", {icon: 2, time: 1000});
+            return true;
+        } else {
+            $(obj).css("border", "1px solid #D5D5D5");
+            return false;
+        }
+    }
+
+
+</script>
+
